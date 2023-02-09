@@ -49,6 +49,11 @@ The library provides the class *VerseMetre*. It accepts an obligatory string for
 >>> verse.rhythm  
 '-+-+-+---+-'
 ```
+The directory 'utils' contains a file that can be used to test the library against ADSO 100 (or any other corpus of sonnets whasoever as long as they are encoded as XML-TEI with their metres are annotated). In the same directory containing the XML files, type:
+
+```bash
+./adso100test.py *xml
+```
 
 ## Release History
 
