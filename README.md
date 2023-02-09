@@ -1,7 +1,7 @@
 # LibEscansión
 > A metrical scansion library for Spanish
 [![License: LGPL][license]][license-url]                                                                    
-[![Version: 1.0.0][version]][version-url]
+[![Version: 1.0.19][version]][version-url]
 [![Python versions: 3.5, 3.6, 3.7, 3.8, 3.9][python-version]][python-version-url]
 
 <h2 align="center">libEscansión</h2>
@@ -9,9 +9,9 @@
 <h3 align="center">A Python library for for metrical scansion of mixed Spanish verses</h2>
 
 
-*libEscansión* is a state-of-the-art Python library for analysing Spanish mixed verses. It parses the verse to find syllabic nuclei, rhythmic pattern, assonance, and consonance, as well as to  provide a phonological transcription of the syyllables. It scores 97.01% accuracy (99.50% discarding non-erroneous disagreements) against the manually annotated corpus [ADSO 100](/), which makes 
+*libEscansión* is a state-of-the-art Python library for analysing Spanish mixed verses. It parses the verse to find syllabic nuclei, rhythmic pattern, assonance, and consonance, as well as to  provide a phonological transcription of the syyllables. It scores 96.80% accuracy against the manually annotated corpus [ADSO 100], which tops the until-now state-of-the-art. Preliminar versions where ranking over 97%, but after evaluating the manual scansions and the spelling, we found that the disagreement was in most cases due to an improper spelling or even to unacostumed human  analysis (unstressed interjections, adverbd in mente lacking secondary stress, etc.). With a corrected corpus, the agreement reaches 99.13 %, being the resting 0.87% non-erroneus disagreements.
 
-This library is part of the research project [Sound and Meaning in Spanish Golden Age Literature](https://soundandmeaning.univie.ac.at/). It was created as a means to gnerate a corpus of parsed metres.
+This library is part of the research project [Sound and Meaning in Spanish Golden Age Literature](https://soundandmeaning.univie.ac.at/). It was created as a means to generate a corpus of parsed metres, which is publicicily accessible [here](https://soundandmeaning.univie.ac.at/?page_id=175)
 
 
 ## Installation
@@ -53,11 +53,14 @@ The library provides the class *VerseMetre*. It accepts an obligatory string for
 ## Release History
 
 * 1.0.0
-    * First public release
+    * First private release
+
+* 1.0.19
+    * Improvements, bugs, and PEP8 issues
 
 ## Meta
 
-Your Name – [@FerdlSanz](https://twitter.com/ferdlsanz) – fsanzl@gmail.com
+Fernando Sanz-Lázaro – [@FerdlSanz](https://twitter.com/ferdlsanz) – fsanzl@gmail.com
 
 Distributed under the LGPL 2.1 license. See ``LICENSE`` for more information.
 

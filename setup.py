@@ -13,7 +13,7 @@ install_requires = ['libEscansion']
 # This call to setup() does all the work
 setup(
     name="libEscansion",
-    version="1.0.0",
+    version="1.0.19",
     python_requires='>=3.5',
     description="Metrical scansion for Spanish verses",
     long_description=README,
@@ -27,7 +27,8 @@ setup(
     author_email="fsanzl@gmail.com",
     license="LGPL",
     classifiers=[
-        "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
+        "License :: OSI Approved :: GNU Lesser General "
+        "Public License v2 or later (LGPLv2+)",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.8",
