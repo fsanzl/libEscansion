@@ -52,11 +52,11 @@ The library provides the class *VerseMetre*. It accepts an obligatory string for
 
 ## Release History
 
-* 1.0.0
-    * First private release
-
 * 1.0.19
     * Improvements, bugs, and PEP8 issues
+
+* 1.0.0
+    * First private release
 
 ## Meta
 
