@@ -17,10 +17,9 @@ values = {'A': 7, 'a': 6, 'ă': 5,
           'I': -2, 'i': -3, 'j': -4,
           'U': -5, 'u': -6, 'w': -7,
           'y': -2, 'X': -999}
-trapezium = {'i': (-1, 1.25), 'e': (-1, 0), 'a': (0, -1.25), 'u': (1, 1.25),
-             'o': (1, 0),
-             'j': (-1, 1.25), 'y': (-1, 1.25), 'ĕ': (-1, 0), 'ă': (0, -1.25),
-             'w': (1, 1.25), 'ŏ': (1, 0)}
+trapez = {'i': (-1, 1.25), 'e': (-0.5, 0), 'a': (0, -1.25), 'u': (1, 1.25),
+          'j': (-1, 1.25), 'ĕ': (-0.5, 0), 'ă': (0, -1.25), 'w': (1, 1.25),
+          'y': (-1, 1.25), 'o': (1, 0), 'ŏ': (1, 0)}
 vowels, semivowels, close = 'aeiouyAEIOU', 'wjăĕŏʰ', 'iujwy'
 
 
@@ -731,8 +730,8 @@ class VerseMetre(PlayLine):
     def __vowel_distance(onset, coda):
         onset = onset.lower()
         coda = coda.strip('ʰ').lower()
-        return abs(trapezium[onset[-1]][0] - trapezium[coda[0]][0]) + abs(
-            trapezium[onset[-1]][1] - trapezium[coda[0]][1])
+        return abs(trapez[onset[-1]][0] - trapez[coda[0]][0]) + abs(
+            trapez[onset[-1]][1] - trapez[coda[0]][1])
 
     @staticmethod
     def __adjust_position(word_list, position, offset):
