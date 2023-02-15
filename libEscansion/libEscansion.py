@@ -2,12 +2,12 @@ import re
 import stanza
 from fonemas import Transcription
 from dataclasses import dataclass
-version = '1.0.19'  # 08/02/2023
+version = '1.0.0'  # 15/02/2023
 
 processor_dict = {'tokenize': 'ancora', 'mwt': 'ancora', 'pos': 'ancora',
                   'ner': 'ancora', 'depparse': 'ancora'}
 conf = {'lang':  'es', 'processors': processor_dict, 'download_method': 'None'}
-nlp = stanza.Pipeline(**conf)
+nlp = stanza.Pipeline(**conf, logging_level='ERROR')
 usuals = ('xueθ', 'suab', 'kɾuel', 'fiel', 'ruina', 'diabl', 'dios', 'kae',
           'rios', 'biɾtuos', 'kɾio', 'ʰuid', 'poɾfiad')
 
@@ -286,7 +286,7 @@ class PlayLine:
 class VerseMetre(PlayLine):
     most_common = [6, 7, 8, 11, 10, 9, 14, 12, 5, 15, 4]
 
-    def __init__(self, line, expected_syl=most_common):
+    def __init__(self, line, expected_syl=False):
         PlayLine.__init__(self, line)
         if len(self.words) > 0:
             self.synaloephas = self.__find_synaloephas(self.words)
@@ -388,24 +388,28 @@ class VerseMetre(PlayLine):
         slbs = len(self.__flatten(syllables)) + (
             self.__find_rhyme(syllables[-1])['count'])
         slbs = slbs - snlf
-        if expected[0] == slbs:
-            exp = []
-        elif expected[0] == 8:
-            if slbs in (6, 7, 8, 9):
-                exp = [8]
-            elif slbs < 6:
-                exp = [7, 8, 6, 5, 4, 3]
+        if expected:
+            if expected[0] == slbs:
+                exp = []
+            elif expected[0] == 8:
+                if slbs in (6, 7, 8, 9):
+                    exp = [8]
+                elif slbs < 6:
+                    exp = [7, 8, 6, 5, 4, 3]
+                else:
+                    exp = [11]
+            elif expected[0] in (7, 11):
+                if slbs < 9:
+                    exp = [7, 11]
+                else:
+                    exp = [11, 7, 8]
+            elif expected[0] == 6 and slbs in (5, 6, 7):
+                exp = [6, 8, 11, 7]
             else:
-                exp = [11]
-        elif expected[0] in (7, 11):
-            if slbs < 9:
-                exp = [7, 11]
-            else:
-                exp = [11, 7, 8]
-        elif expected[0] == 6 and slbs in (5, 6, 7):
-            exp = [6, 8, 11, 7]
+                exp = expected[:2] + [8, 11, 7, 6]
         else:
-            exp = [8, 11, 7, 6]
+            expected = [6, 7, 8, 11, 10, 9, 14, 12, 5, 15, 4]
+            exp = [slbs]
         return (slbs, exp + [a for a in expected if a not in exp])
 
     def __adjust_metre(self, syllables, expected):
@@ -491,11 +495,11 @@ class VerseMetre(PlayLine):
             preference += 4
         elif any(x.islower() is False for x in (coda, onset)):
             preference -= 2
-            if any(any(y in x for y in 'UI') for x in (coda, onset)):
+            if any(y in x for y in 'UI' for x in (coda, onset)):
                 preference -= 1
             if all(x.islower() is False for x in (coda, onset)):
                 preference -= 8
-        if any(any(y in x for y in 'jwăĕŏ') for x in (coda, onset)):
+        if any(y in x for y in 'jwăĕŏ' for x in (coda, onset)):
             preference -= 2
         if all(any(y in x for y in 'iujwăĕŏ') for x in (coda, onset)):
             preference -= 1
@@ -514,8 +518,8 @@ class VerseMetre(PlayLine):
                 preference += 1
             else:
                 preference -= 1
-        onset = re.sub(r'[^aeiouAEIOUjwăĕŏ]*(.*)', r'\1', onset)
-        coda = re.sub(r'([aeiouAEIOUjwăĕŏ]+).*', r'\1', coda)
+        #onset = re.sub(r'[^aeiouAEIOUjwăĕŏ]*(.*)', r'\1', onset)
+        #coda = re.sub(r'([aeiouAEIOUjwăĕŏ]+).*', r'\1', coda)
         return preference
 
     # Required by __adjust_metre
@@ -684,8 +688,6 @@ class VerseMetre(PlayLine):
         elif non_syllabic[onset[-1]] == non_syllabic[coda[0]]:
             if onset[-1].isupper() or coda[0] in semivowels:
                 diphthong = onset + coda[1:]
-            elif coda[0].isupper() or onset[-1] in semivowels:
-                diphthong = onset[:-1] + coda
             else:
                 diphthong = onset[:-1] + coda
         elif onset == 'y' or (onset == 'i' and coda.startswith('u')):
