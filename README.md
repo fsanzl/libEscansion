@@ -1,15 +1,15 @@
 # LibEscansión
 > A metrical scansion library for Spanish
-[![License: LGPL][license]][license-url]                                                                    
-[![Version: 1.0.19][version]][version-url]
-[![Python versions: 3.5, 3.6, 3.7, 3.8, 3.9][python-version]][python-version-url]
+[![License: LGPL](https://img.shields.io/github/license/fsanzl/fonemas)](https://opensource.org/licenses/LGPL-2.1)
+[![Version: 1.0.0](https://img.shields.io/github/v/release/fsanzl/fonemas)](https://github.com/fsanzl/libEscansion/releases/tag/1.0.0)
+[![Python versions: 3.9](https://img.shields.io/pypi/pyversions/fonemas)](https://www.python.org/downloads/release/python-390/)
 
 <h2 align="center">libEscansión</h2>
 
 <h3 align="center">A Python library for for metrical scansion of mixed Spanish verses</h2>
 
 
-*libEscansión* is a state-of-the-art Python library for analysing Spanish mixed verses. It parses the verse to find syllabic nuclei, rhythmic pattern, assonance, and consonance, as well as to  provide a phonological transcription of the syyllables. It scores 96.80% accuracy against the manually annotated corpus [ADSO 100], which tops the until-now state-of-the-art. Preliminar versions where ranking over 97%, but after evaluating the manual scansions and the spelling, we found that the disagreement was in most cases due to an improper spelling or even to unacostumed human  analysis (unstressed interjections, adverbd in mente lacking secondary stress, etc.). With a corrected corpus, the agreement reaches 99.13 %, being the resting 0.87% non-erroneus disagreements.
+*libEscansión* is a state-of-the-art Python library for analysing Spanish mixed verses. It parses the verse to find syllabic nuclei, rhythmic pattern, assonance, and consonance, as well as to  provide a phonological transcription of the syyllables. It scores 96.80% accuracy against the manually annotated corpus [ADSO 100], which tops the until-now state-of-the-art. Preliminar versions where ranking over 98.64%, but after evaluating the manual scansions and the spelling, we found that the disagreement was in most cases due to an improper spelling or even to unacostumed human  analysis (unstressed interjections, adverbd in mente lacking secondary stress, etc.). With a corrected corpus, the agreement reaches 99.13 %, being the resting 0.87% non-erroneus disagreements.
 
 This library is part of the research project [Sound and Meaning in Spanish Golden Age Literature](https://soundandmeaning.univie.ac.at/). It was created as a means to generate a corpus of parsed metres, which is publicicily accessible [here](https://soundandmeaning.univie.ac.at/?page_id=175)
 
@@ -30,7 +30,7 @@ Following libraries are required:
 
 ## Usage example
 
-The library provides the class *VerseMetre*. It accepts an obligatory string for the verse and an optional list of integers with possibles syllable-counts. This should be shorted to yield the best results.
+The library provides the class *VerseMetre*. It accepts an obligatory string for the verse and an optional list of integers with possibles syllable-counts. If a second argment is not provided, it performs a regular scansion, i.e., with all natural dialoephas.
 
 
 ```python                                                                                                                                                                                      
