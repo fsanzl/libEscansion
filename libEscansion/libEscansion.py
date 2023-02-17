@@ -622,6 +622,8 @@ class VerseMetre(PlayLine):
                         coda[(idx+1)*-1] = syllable[jdx:]
                         break
                 break
+            else:
+                coda = word[-2:]
         if tonic < -3:
             tonic = -2
         if len(coda) > 2:
