@@ -2,7 +2,7 @@ import re
 import stanza
 from fonemas import Transcription
 from dataclasses import dataclass
-version = '1.0.0'  # 15/02/2023
+version = '1.0.0'  # 22/02/2023
 
 processor_dict = {'tokenize': 'ancora', 'mwt': 'ancora', 'pos': 'ancora',
                   'ner': 'ancora', 'depparse': 'ancora'}
@@ -316,13 +316,10 @@ class VerseMetre(PlayLine):
             s = False
             if idx != 0 and all(x.lower() in vowels + semivowels
                                 for x in (coda[0], onset[-1])):
+                position = [idx - 1, len(words[idx - 1]) - 1]
                 if idx == 1 and words[0] in (['i'], ['o'])\
                         and coda[0] in 'AEIOU':
                     preference -= 8
-                position = [idx - 1, len(words[idx - 1]) - 1]
-                if coda[0] in semivowels and len(coda) == 1:
-                    if len(words) > idx+1 and words[idx + 1][0][0] in vowels:
-                        preference -= 8
                 if word == ['i'] and len(words) > idx + 2:
                     if onset[-1] in vowels + semivowels:
                         if not words[idx+1][0][0] in vowels+semivowels:
@@ -518,8 +515,6 @@ class VerseMetre(PlayLine):
                 preference += 1
             else:
                 preference -= 1
-        #onset = re.sub(r'[^aeiouAEIOUjwăĕŏ]*(.*)', r'\1', onset)
-        #coda = re.sub(r'([aeiouAEIOUjwăĕŏ]+).*', r'\1', coda)
         return preference
 
     # Required by __adjust_metre
@@ -627,13 +622,13 @@ class VerseMetre(PlayLine):
         if tonic < -3:
             tonic = -2
         if len(coda) > 2:
-            propa = ''.join([syl.lower() for syl in [coda[i]
+            assonance = ''.join([syl.lower() for syl in [coda[i]
                                                      for i in (0, - 1)]])
         else:
-            propa = ''.join([syl.lower() for syl in coda])
-        consonance = ''.join([phoneme.lower() for phoneme in coda])
-        assonance = ''.join([phoneme for phoneme in propa
+            assonance = ''.join([syl.lower() for syl in coda])
+        assonance = ''.join([phoneme for phoneme in assonance
                              if phoneme in vowels])
+        consonance = ''.join([phoneme.lower() for phoneme in coda])
         return {'stress': tonic, 'count': offset[tonic],
                 'assonance': assonance, 'consonance': consonance}
 
