@@ -320,9 +320,9 @@ class VerseMetre(PlayLine):
                 if idx == 1 and words[0] in (['i'], ['o'])\
                         and coda[0] in 'AEIOU':
                     preference -= 8
-                if word == ['i'] and len(words) > idx + 2:
+                if word in [[x] for x in 'ei'] and len(words) > idx + 2:
                     if onset[-1] in vowels + semivowels:
-                        if not words[idx+1][0][0] in vowels+semivowels:
+                        if not words[idx+1][0][0] in vowels + semivowels:
                             s = True
                 elif all(phoneme in vowels + semivowels for phoneme in
                          [onset[-1], coda[0]]):
