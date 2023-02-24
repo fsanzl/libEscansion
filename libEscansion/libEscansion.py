@@ -358,11 +358,8 @@ class VerseMetre(PlayLine):
             ant = word
             offset += len(word)
         for idx, word in enumerate(words):
-            preference = -12
             if len(word) > 1:
-                together = ''.join([i.lower() for i in word])
-                if together.lower().startswith(usuals):
-                    preference += 0
+                preference = -12
                 for idy, syllable in enumerate(word):
                     if idy > 0:
                         position = [idx, idy - 1]
@@ -523,8 +520,8 @@ class VerseMetre(PlayLine):
         diphthongs = []
         for idx, word in enumerate(words):
             for idy, syllable in enumerate(word):
-                if diphthong := re.search(r'([aeioujw])([aeioujw])([wj]*)',
-                                          syllable, re.IGNORECASE):
+                if re.search(r'([aeioujw])([aeioujw])([wj]*)',
+                             syllable, re.IGNORECASE):
                     diphthongs.append((idx, idy))
         return diphthongs
 
@@ -623,7 +620,7 @@ class VerseMetre(PlayLine):
             tonic = -2
         if len(coda) > 2:
             assonance = ''.join([syl.lower() for syl in [coda[i]
-                                                     for i in (0, - 1)]])
+                                                         for i in (0, - 1)]])
         else:
             assonance = ''.join([syl.lower() for syl in coda])
         assonance = ''.join([phoneme for phoneme in assonance
