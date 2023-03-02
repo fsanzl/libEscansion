@@ -679,11 +679,6 @@ class VerseMetre(PlayLine):
         onset, coda = diphthong[0], diphthong[1]  # .replace('ʰ', '')
         if onset[-1] == coda[0]:
             diphthong = onset[:-1] + coda
-        elif non_syllabic[onset[-1]] == non_syllabic[coda[0]]:
-            if onset[-1].isupper() or coda[0] in semivowels:
-                diphthong = onset + coda[1:]
-            else:
-                diphthong = onset[:-1] + coda
         elif onset == 'y' or (onset == 'i' and coda.startswith('u')):
             diphthong = 'ʝ' + coda
         elif values[onset[-1]] > values[coda[0]]:
