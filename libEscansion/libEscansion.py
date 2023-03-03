@@ -2,7 +2,7 @@ import re
 import stanza
 from fonemas import Transcription
 from dataclasses import dataclass
-version = '1.0.0'  # 22/02/2023
+version = '1.0.0'  # 03/03/2023
 
 processor_dict = {'tokenize': 'ancora', 'mwt': 'ancora', 'pos': 'ancora',
                   'ner': 'ancora', 'depparse': 'ancora'}
@@ -498,17 +498,6 @@ class VerseMetre(PlayLine):
             preference -= 1
         if onset[-1] == 'y':
             preference += 1
-        if all(x in 'jw' for x in (coda[0], onset[-1])):
-            preference -= 1
-        elif any(x in 'UIui' for x in (coda[0], onset[-1])):
-            preference += 4
-        if coda[0].lower() == onset[-1].lower():
-            if coda[0].lower() in 'aeo':
-                preference += 1
-            if coda[0].islower() and onset[-1].islower():
-                preference += 1
-            else:
-                preference -= 1
         return preference
 
     # Required by __adjust_metre
