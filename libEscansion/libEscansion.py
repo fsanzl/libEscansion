@@ -44,8 +44,9 @@ class VerseFeatures:
 
 class PlayLine:
 
-    def __init__(self, line):
+    def __init__(self, line, adso=False):
         self.line = line
+        self.adso = adso
         if len(line) > 0:
             self.__fixed_verse = self.__fix_line(self.__preprocess(self.line))
             self.words = self.__find_prosodic_stress(self.__fixed_verse)
@@ -179,7 +180,8 @@ class PlayLine:
                 pass
             elif txt.lower() in ['oh', 'ay']:        # ADSO 100
                 ant = ''
-                ton = True
+                if not self.adso:
+                    ton = True
             elif any(x in txt for x in 'áéíóú'):
                 ton = True
             else:
@@ -286,8 +288,8 @@ class PlayLine:
 class VerseMetre(PlayLine):
     most_common = [6, 7, 8, 11, 10, 9, 14, 12, 5, 15, 4]
 
-    def __init__(self, line, expected_syl=False):
-        PlayLine.__init__(self, line)
+    def __init__(self, line, expected_syl=False, adso=False):
+        PlayLine.__init__(self, line, adso)
         if len(self.words) > 0:
             self.synaloephas = self.__find_synaloephas(self.words)
             self.estimate, self.expected_syl = self.__adjust_expected(
@@ -480,11 +482,10 @@ class VerseMetre(PlayLine):
         voc = vowels + semivowels + vowels.upper() + 'ʰy'
         onset = ''.join([x for x in onset if x in voc])
         coda = ''.join([x for x in coda if x in voc])
-        preference -= 2*(len(onset)-1 + len(coda)-1)
+        preference -= 2*(len(onset) + len(coda) - 2 + distance)
         if coda.startswith('ʰ'):
             preference -= 2
             coda = coda.strip('ʰ')
-        preference -= 2 * distance
         if coda.islower() and onset.islower():
             preference += 4
         elif any(x.islower() is False for x in (coda, onset)):
@@ -493,10 +494,6 @@ class VerseMetre(PlayLine):
                 preference -= 1
             if all(x.islower() is False for x in (coda, onset)):
                 preference -= 8
-        if any(y in x for y in 'jwăĕŏ' for x in (coda, onset)):
-            preference -= 2
-        if all(any(y in x for y in 'iujwăĕŏ') for x in (coda, onset)):
-            preference -= 1
         if coda[0] == 'y':
             preference -= 1
         if onset[-1] == 'y':
