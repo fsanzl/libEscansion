@@ -422,7 +422,7 @@ class VerseMetre(PlayLine):
         elif len_rhyme - len(potential_synaloephas) == expected[0]:
             ambiguous = 0
             syllables = self.__synaloephas(syllables, -offset)
-        elif (len_rhyme - len(potential_synaloephas) - 1 <= expected[0] and
+        elif (len_rhyme - len(potential_synaloephas) < expected[0] and
               self.__test_hemistich(syllables) > 0):
             ambiguous = 4
             syllables = self.__resolve_long(syllables, hemistich)
