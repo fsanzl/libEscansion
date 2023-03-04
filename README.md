@@ -23,8 +23,8 @@ pip install libEscansion
 
 Following libraries are required:
 
-* *stanza* with Spanish language models
-* *fonemas*
+* *stanza* >= 1.4.2 with Spanish language models
+* *fonemas* >= 2.0.16
 
 
 
