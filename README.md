@@ -9,7 +9,7 @@
 <h3 align="center">A Python library for for metrical scansion of mixed Spanish verses</h2>
 
 
-*libEscansión* is a state-of-the-art Python library for analysing Spanish mixed verses. It parses the verse to find syllabic nuclei, rhythmic pattern, assonance, and consonance, as well as to  provide a phonological transcription of the syyllables. It scores 96.80% accuracy against the manually annotated corpus [ADSO 100], which tops the until-now state-of-the-art. Preliminar versions where ranking over 98.64%, but after evaluating the manual scansions and the spelling, we found that the disagreement was in most cases due to an improper spelling or even to unacostumed human  analysis (unstressed interjections, adverbd in mente lacking secondary stress, etc.). With a corrected corpus, the agreement reaches 99.13 %, being the resting 0.87% non-erroneus disagreements.
+*libEscansión* is a state-of-the-art Python library for analysing Spanish mixed verses. It parses the verse to find syllabic nuclei, rhythmic pattern, assonance, and consonance, as well as to  provide a phonological transcription of the syyllables. It scores 98.64% accuracy against the manually annotated corpus [ADSO 100] with the option *adso=True*, which forces considering interjections as non-stressed to meet ADSO's criteria. This tops the until-now state-of-the-art. Nevertheless, vanilla scansion still outperforms the state-of-the art as it achieves 96.8%. Furthermore, after evaluating the corpus' manual scansion and spelling, we found that the disagreement was in most cases due to an improper spelling or even to non-standard human  analysis (unstressed interjections, adverbd in -mente lacking secondary stress, etc.). With a corrected corpus, the agreement reaches 99.13 %, being the resting 0.87% non-erroneus disagreements.
 
 This library is part of the research project [Sound and Meaning in Spanish Golden Age Literature](https://soundandmeaning.univie.ac.at/). It was created as a means to generate a corpus of parsed metres, which is publicicily accessible [here](https://soundandmeaning.univie.ac.at/?page_id=175)
 
@@ -19,12 +19,14 @@ This library is part of the research project [Sound and Meaning in Spanish Golde
 ```sh
 pip install libEscansion
 ```
+
+Alternatively, the lasr 
 ## Requeriments
 
 Following libraries are required:
 
-* *stanza* with Spanish language models
-* *fonemas*
+* *stanza* >= 1.4.2 with Spanish language models
+* *fonemas* >= 2.0.16
 
 
 
