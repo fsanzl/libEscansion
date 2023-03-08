@@ -438,6 +438,7 @@ class VerseMetre(PlayLine):
                 syllables = self.__synaloephas(syllables, -offset)
             elif (len_rhyme + len(potential_hiatuses) >= expected[0] and
                   len_rhyme > 4):
+                expected = expected[:1] + expected
                 syllables = self.__apply_hiatus(syllables,
                                                 potential_hiatuses,
                                                 offset)
@@ -508,7 +509,9 @@ class VerseMetre(PlayLine):
             for idy, syllable in enumerate(word):
                 if re.search(r'([aeioujw])([aeioujw])([wj]*)',
                              syllable, re.IGNORECASE):
-                    diphthongs.append((idx, idy))
+                    if idx + 1 < len(words) or idy + 1 < len(word) or \
+                            not syllable.islower():
+                        diphthongs.append((idx, idy))
         return diphthongs
 
     def __apply_hiatus(self, words, hiatuses, difference):
