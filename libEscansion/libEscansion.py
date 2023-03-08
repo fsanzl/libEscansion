@@ -436,14 +436,17 @@ class VerseMetre(PlayLine):
             ambiguous = 1
             if offset < 0 and len(potential_synaloephas) >= -offset:
                 syllables = self.__synaloephas(syllables, -offset)
-            elif (len_rhyme + len(potential_hiatuses) >= expected[0] and
+            elif (len_rhyme < expected[0] and potential_hiatuses and
                   len_rhyme > 4):
+                print(potential_hiatuses)
+
                 expected = expected[:1] + expected
                 syllables = self.__apply_hiatus(syllables,
                                                 potential_hiatuses,
                                                 offset)
         rhyme = self.__find_rhyme(syllables[-1])
         len_rhyme = len(self.__flatten(syllables)) + rhyme['count']
+        print('\n\nXXX:', syllables, len_rhyme, expected)
         if len_rhyme > expected[0]:
             return self.__adjust_metre(syllables, expected[1:])
         elif len_rhyme < expected[0]:
