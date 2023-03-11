@@ -412,7 +412,6 @@ class VerseMetre(PlayLine):
         potential_synaloephas = self.__find_synaloephas(syllables)
         potential_hiatuses = self.__find_hiatuses(syllables)
         rhyme = self.__find_rhyme(syllables[-1])
-        epen = self.__find_epenthesis(self.line)
         len_rhyme = len(self.__flatten(syllables)) + rhyme['count']
         offset = expected[0] - len_rhyme
         hemistich = self.__test_hemistich(syllables)
@@ -428,9 +427,8 @@ class VerseMetre(PlayLine):
             syllables = self.__resolve_long(syllables, hemistich)
             syllables = self.__synaloephas(syllables, -offset - 1)
             len_rhyme -= 1
-        elif len_rhyme - len(potential_synaloephas) - len(epen) == expected[0]:
+        elif len_rhyme - len(potential_synaloephas) == expected[0]:
             ambiguous = 3
-            sllbls = self.__remove_epenthesis(syllables, epen)
             syllables = self.__synaloephas(syllables, -offset)
         else:
             ambiguous = 1
