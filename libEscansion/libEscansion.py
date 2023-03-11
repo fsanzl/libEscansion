@@ -436,9 +436,8 @@ class VerseMetre(PlayLine):
             ambiguous = 1
             if offset < 0 and len(potential_synaloephas) >= -offset:
                 syllables = self.__synaloephas(syllables, -offset)
-            elif (len_rhyme < expected[0] and len_rhyme > 4 and
+            elif (len_rhyme < expected[0] > 4 and
                   len(potential_hiatuses) + len_rhyme >= expected[0]):
-
                 expected = expected[:1] + expected
                 syllables = self.__apply_hiatus(syllables,
                                                 potential_hiatuses,
@@ -542,24 +541,6 @@ class VerseMetre(PlayLine):
                     for index, element in enumerate(word)]
             words[idx[0]] = re.split(' +', ' '.join([element[1]
                                                      for element in word]))
-        return words
-
-    @staticmethod
-    def __find_epenthesis(sentence):
-        count, place = 0, []
-        for word in sentence.split():
-            if word.lower()[:2] in ('sc', 'sp', 'st', 'sn', 'sk'):
-                place.append(count)
-            count += 1
-        return place
-
-    @staticmethod
-    def __remove_epenthesis(words, place):
-        for idx, word in enumerate(words):
-            if idx in place and word[0].startswith('e'):
-                word[1] = word[0][1:] + word[1]
-                word = word[1:]
-                words[idx] = word
         return words
 
     def __test_hemistich(self, word_list):
@@ -699,7 +680,7 @@ class VerseMetre(PlayLine):
         for idx, second in enumerate(reversed(preference)):
             for first in preference[:-idx-1]:
                 if first[0] == second[0] and first[1] < second[1]:
-                    preference[-1-idx] = (second[0], second[1]+1)
+                    preference[-idx-1] = (second[0], second[1]+1)
         return preference
 
     # AUXILIARY METHODS
