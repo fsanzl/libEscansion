@@ -414,7 +414,6 @@ class VerseMetre(PlayLine):
         rhyme = self.__find_rhyme(syllables[-1])
         len_rhyme = len(self.__flatten(syllables)) + rhyme['count']
         offset = expected[0] - len_rhyme
-        hemistich = self.__test_hemistich(syllables)
         sllbls = syllables[0:]
         if offset == 0:
             ambiguous = 0
