@@ -421,15 +421,13 @@ class VerseMetre(PlayLine):
         elif len_rhyme - len(potential_synaloephas) == expected[0]:
             ambiguous = 0
             syllables = self.__synaloephas(syllables, -offset)
-        elif (len_rhyme - len(potential_synaloephas) < expected[0] and
-              self.__test_hemistich(syllables) > 0):
-            ambiguous = 4
-            syllables = self.__resolve_long(syllables, hemistich)
+        elif len_rhyme - len(potential_synaloephas) > expected[0]:
+            ambiguous = 2
             syllables = self.__synaloephas(syllables, -offset - 1)
-            len_rhyme -= 1
-        elif len_rhyme - len(potential_synaloephas) == expected[0]:
-            ambiguous = 3
-            syllables = self.__synaloephas(syllables, -offset)
+            hemistich = self.__test_hemistich(syllables)
+            if self.__test_hemistich(syllables) > 0:
+                syllables = self.__resolve_long(syllables, hemistich)
+                len_rhyme -= 1
         else:
             ambiguous = 1
             if offset < 0 and len(potential_synaloephas) >= -offset:
@@ -544,12 +542,13 @@ class VerseMetre(PlayLine):
     def __test_hemistich(self, word_list):
         offset = i = correction = 0
         for idx, word in enumerate(word_list):
-            if i < 4 and len(self.__flatten(word_list)) > 9:
+            if len(self.__flatten(word_list)) > 9:
                 for idy, syllable in enumerate(word):
                     if any(x in syllable for x in 'AEIOU') and \
-                            idy + offset == 3 and len(word) - idy > 2 and \
-                            word[-2:] != ['mEn', 'te']:
+                            idy + offset in (3, 5) and len(word) - idy > 2 \
+                            and word[-2:] != ['mEn', 'te']:
                         correction = idx
+                        break
                     i += 1
                 offset += len(word)
             else:
