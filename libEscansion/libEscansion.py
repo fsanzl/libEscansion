@@ -543,10 +543,10 @@ class VerseMetre(PlayLine):
         for idx, word in enumerate(word_list):
             if len(self.__flatten(word_list)) > 9:
                 for idy, syllable in enumerate(word):
-                    if any(x in syllable for x in 'AEIOU') and \
-                            idy + offset in (3, 5) and len(word) - idy > 2 \
-                            and word[-2:] != ['mEn', 'te']:
-                        correction = idx
+                    if any(x in syllable for x in 'AEIOU') \
+                            and idy + offset in (3, 5):
+                        if len(word) - idy > 2 and word[-2:] != ['mEn', 'te']:
+                            correction = idx
                         break
                     i += 1
                 offset += len(word)
