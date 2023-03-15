@@ -2,7 +2,7 @@ import re
 import stanza
 from fonemas import Transcription
 from dataclasses import dataclass
-version = '1.0.0'  # 03/03/2023
+version = '1.0.0'  # 15/03/2023
 
 processor_dict = {'tokenize': 'ancora', 'mwt': 'ancora', 'pos': 'ancora',
                   'ner': 'ancora', 'depparse': 'ancora'}
@@ -20,7 +20,8 @@ values = {'A': 7, 'a': 6, 'ă': 5,
 trapez = {'i': (-1, 1.25), 'e': (-0.5, 0), 'a': (0, -1.25), 'u': (1, 1.25),
           'j': (-1, 1.25), 'ĕ': (-0.5, 0), 'ă': (0, -1.25), 'w': (1, 1.25),
           'y': (-1, 1.25), 'o': (1, 0), 'ŏ': (1, 0)}
-vowels, semivowels, close = 'aeiouyAEIOU', 'wjăĕŏʰ', 'iujwy'
+glides, close, med = 'wjăĕŏʰ', 'IUiuy', 'AEOaeo'
+vowels, vocalic = close + med, glides + close + med
 
 
 @dataclass
@@ -55,12 +56,11 @@ class PlayLine:
 
     def __preprocess(self, transcription):
         transcription = re.sub(r'[Pp]ara\,', 'Ppara,', transcription)
-        symbols = {'(': '.', ')': '.', '—': '. ', '…': '.',  # ',': '. ',
-                   ';': '.', ':': '.', '?': '.', '!': '.',
-                   'õ': 'o', 'æ': 'ae',
+        symbols = {'(': '.', ')': '.', '—': '. ', '…': '.', '‘': '', '’': '',
+                   ';': '.', ':': '.', '?': '.', '!': '.', '"': '', '-': ' ',
+                   'õ': 'o', 'æ': 'ae',  # ',': '. ',
                    'à': 'a', 'è': 'e', 'ì': 'i', 'ò': 'o', 'ù': 'u',
-                   '«': '', '»': '', '–': '.', '“': '', '”': '',
-                   '‘': '', '’': '', '"': '', '-': ' ', "'": ''}
+                   '«': '', '»': '', '–': '.', '“': '', '”': '', "'": ''}
         if transcription != transcription:
             transcription = 'mama mama mama mama'
         else:
@@ -316,17 +316,17 @@ class VerseMetre(PlayLine):
             coda = word[0].replace('ʰ', '')
             onset = ant[-1]
             s = False
-            if idx != 0 and all(x.lower() in vowels + semivowels
+            if idx != 0 and all(x.lower() in vocalic
                                 for x in (coda[0], onset[-1])):
                 position = [idx - 1, len(words[idx - 1]) - 1]
                 if idx == 1 and words[0] in (['i'], ['o'])\
                         and coda[0] in 'AEIOU':
                     preference -= 8
                 if word in [[x] for x in 'ei'] and len(words) > idx + 2:
-                    if onset[-1] in vowels + semivowels:
-                        if not words[idx+1][0][0] in vowels + semivowels:
+                    if onset[-1] in vocalic:
+                        if not words[idx+1][0][0] in vocalic:
                             s = True
-                elif all(phoneme in vowels + semivowels for phoneme in
+                elif all(phoneme in vocalic for phoneme in
                          [onset[-1], coda[0]]):
                     val = values[onset[-1]]
                     if len(onset) > 1 and onset[-2] in values:
@@ -367,7 +367,7 @@ class VerseMetre(PlayLine):
                         position = [idx, idy - 1]
                         coda = syllable
                         onset = word[idy - 1]
-                        if all(x in vowels + semivowels
+                        if all(x in vocalic
                                for x in [onset[-1], coda[0]]) and not (
                                    onset[-1].isupper()
                                    and idx + 1 == len(words)
@@ -440,25 +440,24 @@ class VerseMetre(PlayLine):
         rhyme = self.__find_rhyme(syllables[-1])
         len_rhyme = len(self.__flatten(syllables)) + rhyme['count']
         if len_rhyme > expected[0]:
-            return self.__adjust_metre(syllables, expected[1:])
+            verse = self.__adjust_metre(syllables, expected[1:])
         elif len_rhyme < expected[0]:
-            return self.__adjust_metre(sllbls, expected[1:])
+            verse = self.__adjust_metre(sllbls, expected[1:])
         else:
             rep = {'y': 'i', 'Y': 'I', 'ppA': 'pA'}
             for i, s in enumerate(syllables):
                 if s[0] in rep.keys():
                     syllables[i][0] = rep[s[0]]
-            return VerseFeatures(syllables,
-                                 ambiguous,
-                                 len_rhyme,
-                                 rhyme['assonance'],
-                                 rhyme['consonance'])
+            verse = VerseFeatures(syllables,
+                                  ambiguous,
+                                  len_rhyme,
+                                  rhyme['assonance'],
+                                  rhyme['consonance'])
+        return verse
 
     @staticmethod
     def find_nuclei(syllables):
-        vowels = 'AEIOUaeiou'
-        return ''.join([nucleus for syl in [phon for clstr in
-                                            syllables
+        return ''.join([nucleus for syl in [phon for clstr in syllables
                                             for phon in clstr]
                         for nucleus in syl if nucleus in vowels])
 
@@ -475,7 +474,7 @@ class VerseMetre(PlayLine):
     # Required by __find_synaloephas
     def __synaloepha_pref(self, onset, coda, preference=0):
         distance = self.__vowel_distance(onset, coda)
-        voc = vowels + semivowels + vowels.upper() + 'ʰy'
+        voc = vocalic + 'ʰy'
         onset = ''.join([x for x in onset if x in voc])
         coda = ''.join([x for x in coda if x in voc])
         preference -= 2*(len(onset) + len(coda) - 2 + distance)
@@ -502,8 +501,7 @@ class VerseMetre(PlayLine):
         diphthongs = []
         for idx, word in enumerate(words):
             for idy, syllable in enumerate(word):
-                if re.search(r'([aeioujw])([aeioujw])([wj]*)',
-                             syllable, re.IGNORECASE):
+                if re.search(rf'([{vocalic}])([{vowels}])([wj]*)', syllable):
                     if idx + 1 < len(words) or idy + 1 < len(word) or \
                             not syllable.islower():
                         diphthongs.append((idx, idy))
@@ -524,14 +522,14 @@ class VerseMetre(PlayLine):
             if semivowel and nucleus:
                 if nucleus.isupper():
                     nucleus, semivowel = nucleus.lower(), semivowel.upper()
-                first_part = onset + nucleus
-                second_part = semivowel.replace(semivowel[-1],
-                                                sem2voc[semivowel[-1]]) + coda
+                first = onset + nucleus
+                second = semivowel.replace(semivowel[-1],
+                                           sem2voc[semivowel[-1]]) + coda
             else:
-                first_part = onset + semiconsonant.replace(
+                first = onset + semiconsonant.replace(
                     semiconsonant[-1], sem2voc[semiconsonant[-1]])
-                second_part = nucleus + coda
-            hiatus = f'{first_part} {second_part}'
+                second = nucleus + coda
+            hiatus = f'{first} {second}'
             word = [(index, element) if index != idx[1] else (idx[1], hiatus)
                     for index, element in enumerate(word)]
             words[idx[0]] = re.split(' +', ' '.join([element[1]
@@ -560,9 +558,8 @@ class VerseMetre(PlayLine):
             count += 1
             syllables = self.__adjust_syllables(syllables,
                                                 potential_synaloephas[:1])
-            return self.__synaloephas(syllables, offset-1, count)
-        else:
-            return syllables
+            syllables = self.__synaloephas(syllables, offset-1, count)
+        return syllables
 
     @staticmethod
     def __resolve_long(words, position):
@@ -571,7 +568,7 @@ class VerseMetre(PlayLine):
 
     @staticmethod
     def __find_rhyme(word):
-        vowels, offset, tonic = 'aeiou', {-1: 1, -2: 0, -3: -1}, -1
+        offset, tonic = {-1: 1, -2: 0, -3: -1}, -1
         for idx, syllable in enumerate(word[::-1]):
             if any([phoneme.isupper() for phoneme in syllable]):
                 tonic = -idx - 1
@@ -587,7 +584,7 @@ class VerseMetre(PlayLine):
             tonic = -2
         if len(coda) > 2:
             assonance = ''.join([syl.lower() for syl in [coda[i]
-                                                         for i in (0, - 1)]])
+                                                         for i in (0, -1)]])
         else:
             assonance = ''.join([syl.lower() for syl in coda])
         assonance = ''.join([phoneme for phoneme in assonance
@@ -599,42 +596,39 @@ class VerseMetre(PlayLine):
     #   Required by __synaloephas
     def __adjust_syllables(self, words, synaloephas):
         synaloephas_list = [syllable[0] for syllable in synaloephas]
-        if len(synaloephas_list) < 1:
-            return words
-        else:
-            if synaloephas_list[0][0] < sum([len(word) for word in words]):
-                i_word1 = synaloephas_list[0][0]
-                i_syllable1 = synaloephas_list[0][1]
-                word = words[synaloephas_list[0][0]]
-                l_word = len(word)
-                joint = [synaloephas[0][-2], synaloephas[0][-1]]
-                if i_syllable1 == l_word - 1:
-                    i_syllable2 = 0
-                    i_word2 = i_word1 + 1
-                    if len(words[i_word1]) > 1:
-                        onset = words[i_word1][:-1]
-                    else:
-                        onset = []
-                    coda = words[i_word2][1:]
-                    diphthong = [self.__apply_synaloephas(joint)]
-                    word = onset + diphthong
-                    if len(words[i_word2]) > 1:
-                        word = word + coda
-                    words = (words[:i_word1] +
-                             [word] + words[i_word2+1:])
-                    synaloephas_list = self.__adjust_position(
-                        synaloephas_list[1:],
-                        synaloephas_list[0], len(onset))
+        if len(synaloephas_list) > 0 and (synaloephas_list[0][0] <
+                                          sum([len(word) for word in words])):
+            i_word1 = synaloephas_list[0][0]
+            i_syllable1 = synaloephas_list[0][1]
+            word = words[synaloephas_list[0][0]]
+            l_word = len(word)
+            joint = [synaloephas[0][-2], synaloephas[0][-1]]
+            if i_syllable1 == l_word - 1:
+                i_syllable2 = 0
+                i_word2 = i_word1 + 1
+                if len(words[i_word1]) > 1:
+                    onset = words[i_word1][:-1]
                 else:
-                    i_syllable2 = i_syllable1 + 1
-                    onset = words[i_word1][:i_syllable1]
-                    coda = words[i_word1][i_syllable2+1:]
-                    diphthong = self.__apply_synaloephas(joint)
-                    word = onset + [diphthong] + coda
-                    words[i_word1] = word
-                    synaloephas_list = self.__adjust_position(
-                        synaloephas_list[1:], synaloephas_list[0], -1)
-            return self.__adjust_syllables(words, synaloephas_list)
+                    onset = []
+                coda = words[i_word2][1:]
+                diphthong = [self.__apply_synaloephas(joint)]
+                word = onset + diphthong
+                if len(words[i_word2]) > 1:
+                    word = word + coda
+                words = (words[:i_word1] + [word] + words[i_word2+1:])
+                synaloephas_list = self.__adjust_position(
+                    synaloephas_list[1:], synaloephas_list[0], len(onset))
+            else:
+                i_syllable2 = i_syllable1 + 1
+                onset = words[i_word1][:i_syllable1]
+                coda = words[i_word1][i_syllable2+1:]
+                diphthong = self.__apply_synaloephas(joint)
+                word = onset + [diphthong] + coda
+                words[i_word1] = word
+                synaloephas_list = self.__adjust_position(
+                    synaloephas_list[1:], synaloephas_list[0], -1)
+            words = self.__adjust_syllables(words, synaloephas_list)
+        return words
 
     @staticmethod
     def __apply_synaloephas(diphthong):
