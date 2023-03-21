@@ -2,7 +2,7 @@ import re
 import stanza
 from fonemas import Transcription
 from dataclasses import dataclass
-version = '1.0.0'  # 15/03/2023
+version = '1.0.0'  # 21/03/2023
 
 processor_dict = {'tokenize': 'ancora', 'mwt': 'ancora', 'pos': 'ancora',
                   'ner': 'ancora', 'depparse': 'ancora'}
