@@ -20,8 +20,9 @@ values = {'A': 7, 'a': 6, 'ă': 5,
 trapez = {'i': (-1, 1.25), 'e': (-0.5, 0), 'a': (0, -1.25), 'u': (1, 1.25),
           'j': (-1, 1.25), 'ĕ': (-0.5, 0), 'ă': (0, -1.25), 'w': (1, 1.25),
           'y': (-1, 1.25), 'o': (1, 0), 'ŏ': (1, 0)}
-glides, close, med = 'wjăĕŏʰ', 'IUiuy', 'AEOaeo'
+glides, close, med = 'wjăĕŏ', 'IUiuy', 'AEOaeo'
 vowels, vocalic = close + med, glides + close + med
+allvoc = vocalic + 'ʰy'
 
 
 @dataclass
@@ -316,17 +317,17 @@ class VerseMetre(PlayLine):
             coda = word[0].replace('ʰ', '')
             onset = ant[-1]
             s = False
-            if idx != 0 and all(x.lower() in vocalic
+            if idx != 0 and all(x.lower() in allvoc
                                 for x in (coda[0], onset[-1])):
                 position = [idx - 1, len(words[idx - 1]) - 1]
                 if idx == 1 and words[0] in (['i'], ['o'])\
                         and coda[0] in 'AEIOU':
                     preference -= 8
                 if word in [[x] for x in 'ei'] and len(words) > idx + 2:
-                    if onset[-1] in vocalic:
-                        if not words[idx+1][0][0] in vocalic:
+                    if onset[-1] in allvoc:
+                        if not words[idx+1][0][0] in allvoc:
                             s = True
-                elif all(phoneme in vocalic for phoneme in
+                elif all(phoneme in allvoc for phoneme in
                          [onset[-1], coda[0]]):
                     val = values[onset[-1]]
                     if len(onset) > 1 and onset[-2] in values:
@@ -367,7 +368,7 @@ class VerseMetre(PlayLine):
                         position = [idx, idy - 1]
                         coda = syllable
                         onset = word[idy - 1]
-                        if all(x in vocalic
+                        if all(x in allvoc
                                for x in [onset[-1], coda[0]]) and not (
                                    onset[-1].isupper()
                                    and idx + 1 == len(words)
@@ -474,9 +475,8 @@ class VerseMetre(PlayLine):
     # Required by __find_synaloephas
     def __synaloepha_pref(self, onset, coda, preference=0):
         distance = self.__vowel_distance(onset, coda)
-        voc = vocalic + 'ʰy'
-        onset = ''.join([x for x in onset if x in voc])
-        coda = ''.join([x for x in coda if x in voc])
+        onset = ''.join([x for x in onset if x in allvoc])
+        coda = ''.join([x for x in coda if x in allvoc])
         preference -= 2*(len(onset) + len(coda) - 2 + distance)
         if coda.startswith('ʰ'):
             preference -= 2
@@ -501,7 +501,7 @@ class VerseMetre(PlayLine):
         diphthongs = []
         for idx, word in enumerate(words):
             for idy, syllable in enumerate(word):
-                if re.search(rf'([{vocalic}])([{vowels}])([wj]*)', syllable):
+                if re.search(r'([wj][AEOI])|([AEOI][wj])', syllable):
                     if idx + 1 < len(words) or idy + 1 < len(word) or \
                             not syllable.islower():
                         diphthongs.append((idx, idy))
@@ -513,27 +513,28 @@ class VerseMetre(PlayLine):
         for idx in preference[:difference]:
             word = words[idx[0]]
             syllable = word[idx[1]]
-            diphthong = re.search(r'([jw]*)([aeiouAEIOU])([jw]*)', syllable)
-            onset = syllable.split(diphthong.group())[0]
-            coda = syllable.split(diphthong.group())[1]
-            semiconsonant = diphthong.group(1)
-            nucleus = diphthong.group(2)
-            semivowel = diphthong.group(3)
-            if semivowel and nucleus:
-                if nucleus.isupper():
-                    nucleus, semivowel = nucleus.lower(), semivowel.upper()
-                first = onset + nucleus
-                second = semivowel.replace(semivowel[-1],
-                                           sem2voc[semivowel[-1]]) + coda
-            else:
-                first = onset + semiconsonant.replace(
-                    semiconsonant[-1], sem2voc[semiconsonant[-1]])
-                second = nucleus + coda
-            hiatus = f'{first} {second}'
-            word = [(index, element) if index != idx[1] else (idx[1], hiatus)
-                    for index, element in enumerate(word)]
-            words[idx[0]] = re.split(' +', ' '.join([element[1]
-                                                     for element in word]))
+            diphthong = re.search(r'([jw]*)([aeiouAEIOUjw])([jw]*)', syllable)
+            if len(diphthong.group()) > 1:
+                onset = syllable.split(diphthong.group())[0]
+                coda = syllable.split(diphthong.group())[1]
+                semiconsonant = diphthong.group(1)
+                nucleus = diphthong.group(2)
+                semivowel = diphthong.group(3)
+                if semivowel and nucleus:
+                    if nucleus.isupper():
+                        nucleus, semivowel = nucleus.lower(), semivowel.upper()
+                    first = onset + nucleus
+                    second = semivowel.replace(semivowel[-1],
+                                               sem2voc[semivowel[-1]]) + coda
+                else:
+                    first = onset + semiconsonant.replace(
+                        semiconsonant[-1], sem2voc[semiconsonant[-1]])
+                    second = nucleus + coda
+                hiatus = f'{first} {second}'
+                word = [(index, element) if index != idx[1] else
+                        (idx[1], hiatus) for index, element in enumerate(word)]
+                words[idx[0]] = re.split(' +', ' '.join([element[1]
+                                                         for element in word]))
         return words
 
     def __test_hemistich(self, word_list):
@@ -596,8 +597,7 @@ class VerseMetre(PlayLine):
     #   Required by __synaloephas
     def __adjust_syllables(self, words, synaloephas):
         synaloephas_list = [syllable[0] for syllable in synaloephas]
-        if len(synaloephas_list) > 0 and (synaloephas_list[0][0] <
-                                          sum([len(word) for word in words])):
+        if synaloephas_list:
             i_word1 = synaloephas_list[0][0]
             i_syllable1 = synaloephas_list[0][1]
             word = words[synaloephas_list[0][0]]
@@ -690,7 +690,7 @@ class VerseMetre(PlayLine):
         for idx, word in enumerate(word_list):
             if offset < 0:
                 if word[0] == position[0]:
-                    if position[1] >= position[1]:
+                    if word[1] >= position[1]:
                         word_list[idx][1] -= 1
             elif word[0] > position[0]:
                 if word[0] == position[0] + 1:
