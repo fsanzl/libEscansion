@@ -404,9 +404,17 @@ class VerseMetre(PlayLine):
                 exp = [6, 8, 11, 7]
             else:
                 exp = expected[:2] + [8, 11, 7, 6]
-        else:
+        elif slbs in (6, 7, 8, 11):
             expected = [6, 7, 8, 11, 10, 9, 14, 12, 5, 15, 4]
             exp = [slbs]
+        else:
+            if slbs > 10:
+                exp = [11]
+            elif slbs > 8:
+                exp = [8]
+            else:
+                exp = [slbs]
+            expected = [8, 11, 7, 6, 10, 9, 14, 12, 5, 15, 4]
         return (slbs, exp + [a for a in expected if a not in exp])
 
     def __adjust_metre(self, syllables, expected):
