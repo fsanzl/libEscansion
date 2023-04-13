@@ -385,7 +385,6 @@ class VerseMetre(PlayLine):
         slbs = len(self.__flatten(syllables)) + (
             self.__find_rhyme(syllables[-1])['count'])
         slbs = slbs - snlf
-        print(expected[0], slbs)
         if expected:
             if expected[0] == 7:
                 exp = [7, 11]
