@@ -287,7 +287,7 @@ class PlayLine:
 
 
 class VerseMetre(PlayLine):
-    most_common = [6, 7, 8, 11, 10, 9, 14, 12, 5, 15, 4]
+    most_common = [8, 11, 7, 6, 10, 9, 14, 12, 5, 15, 4]
 
     def __init__(self, line, expected_syl=False, adso=False):
         PlayLine.__init__(self, line, adso)
@@ -296,6 +296,11 @@ class VerseMetre(PlayLine):
             self.estimate, self.expected_syl = self.__adjust_expected(
                 self.words, self.synaloephas, expected_syl)
             self.__verse = self.__adjust_metre(self.words, self.expected_syl)
+            if self.expected_syl:
+                self.natural = self.__adjust_metre(self.words,
+                                                   self.most_common).count
+            else:
+                self.natural = self.count
             self.syllables = self.__verse.slbs
             self.ambiguity = self.__verse.amb
             self.asson = self.__verse.asson
