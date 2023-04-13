@@ -497,7 +497,7 @@ class VerseMetre(PlayLine):
         diphthongs = []
         for idx, word in enumerate(words):
             for idy, syllable in enumerate(word):
-                if re.search(r'([wj][AEOI])|([AEOI][wj])', syllable):
+                if re.search(r'([wj][AEOIaeoi])|([AEOIaeoi][wj])', syllable):
                     if idx + 1 < len(words) or idy + 1 < len(word) or \
                             not syllable.islower():
                         diphthongs.append((idx, idy))
