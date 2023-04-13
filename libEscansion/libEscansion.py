@@ -287,7 +287,7 @@ class PlayLine:
 
 
 class VerseMetre(PlayLine):
-    most_common = [8, 11, 7, 6, 10, 9, 14, 12, 5, 15, 4]
+    most_common = [6, 7, 8, 11, 10, 9, 14, 12, 5, 15, 4]
 
     def __init__(self, line, expected_syl=False, adso=False):
         PlayLine.__init__(self, line, adso)
