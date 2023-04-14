@@ -60,7 +60,7 @@ The directory 'utils' contains a file that can be used to test the library again
 ## Release History
 
 
-### 1.0.0
+### 1.0.0pre1
 - First public release
 
 ## Meta
