@@ -292,15 +292,13 @@ class VerseMetre(PlayLine):
     def __init__(self, line, expected_syl=False, adso=False):
         PlayLine.__init__(self, line, adso)
         if len(self.words) > 0:
+            natural = len(self.__flatten(self.words)) + self.__find_rhyme(self.words[-1])['count']
             self.synaloephas = self.__find_synaloephas(self.words)
+            normalsyn = [a for a in self.synaloephas if a[1] > -15] 
+            self.natural = natural - len(normalsyn)
             self.estimate, self.expected_syl = self.__adjust_expected(
                 self.words, self.synaloephas, expected_syl)
             self.__verse = self.__adjust_metre(self.words, self.expected_syl)
-            if self.expected_syl:
-                self.natural = self.__adjust_metre(self.words,
-                                                   self.most_common).count
-            else:
-                self.natural = self.count
             self.syllables = self.__verse.slbs
             self.ambiguity = self.__verse.amb
             self.asson = self.__verse.asson
@@ -313,6 +311,7 @@ class VerseMetre(PlayLine):
             self.estimate = self.count = 0
             self.ambiguity = self.asson = self.rhyme = False
             self.nuclei = self.rhythm = ''
+            self.natural = 0
 
     def __find_synaloephas(self, words, h=False):
         synaloephas, ant = [], ['X']
@@ -501,10 +500,14 @@ class VerseMetre(PlayLine):
     def __find_hiatuses(words):
         diphthongs = []
         for idx, word in enumerate(words):
+            ton = 0
+            for idy, syllable in enumerate(reversed(word)):
+                if any(x.isupper() for x in syllable):
+                    ton = len(word) - idy - 1
+                    continue
             for idy, syllable in enumerate(word):
-                if re.search(r'([wj][AEOIaeoi])|([AEOIaeoi][wj])', syllable):
-                    if idx + 1 < len(words) or idy + 1 < len(word) or \
-                            not syllable.islower():
+                if rg := re.search(r'([wj][AEOIaeoi])|([AEOIaeoi][wj])', syllable):
+                    if idy < ton or (rg.group(1) and not rg.group(1).islower()):
                         diphthongs.append((idx, idy))
         return diphthongs
 
