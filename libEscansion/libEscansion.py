@@ -292,9 +292,10 @@ class VerseMetre(PlayLine):
     def __init__(self, line, expected_syl=False, adso=False):
         PlayLine.__init__(self, line, adso)
         if len(self.words) > 0:
-            natural = len(self.__flatten(self.words)) + self.__find_rhyme(self.words[-1])['count']
+            natural = len(self.__flatten(self.words)) + self.__find_rhyme(
+                self.words[-1])['count']
             self.synaloephas = self.__find_synaloephas(self.words)
-            normalsyn = [a for a in self.synaloephas if a[1] > -15] 
+            normalsyn = [a for a in self.synaloephas if a[1] > -15]
             self.natural = natural - len(normalsyn)
             self.estimate, self.expected_syl = self.__adjust_expected(
                 self.words, self.synaloephas, expected_syl)
@@ -506,8 +507,9 @@ class VerseMetre(PlayLine):
                     ton = len(word) - idy - 1
                     continue
             for idy, syllable in enumerate(word):
-                if rg := re.search(r'([wj][AEOIaeoi])|([AEOIaeoi][wj])', syllable):
-                    if idy < ton or (rg.group(1) and not rg.group(1).islower()):
+                if rg := re.search(r'([wj][AEOIaeoi])|([AEOIaeoi][wj])',
+                                   syllable):
+                    if idy < ton or rg.group(1):
                         diphthongs.append((idx, idy))
         return diphthongs
 
