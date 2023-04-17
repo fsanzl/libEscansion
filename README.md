@@ -1,7 +1,7 @@
 # LibEscansión
 > A metrical scansion library for Spanish
 [![License: LGPL](https://img.shields.io/github/license/fsanzl/fonemas)](https://opensource.org/licenses/LGPL-2.1)
-[![Version: 1.0.0](https://img.shields.io/github/v/release/fsanzl/fonemas)](https://github.com/fsanzl/libEscansion/releases/tag/1.0.0)
+[![Version: 1.0.0-2](https://img.shields.io/github/v/release/fsanzl/fonemas)](https://github.com/fsanzl/libEscansion/releases/tag/1.0.0)
 [![Python versions: 3.9](https://img.shields.io/pypi/pyversions/fonemas)](https://www.python.org/downloads/release/python-390/)
 
 <h2 align="center">libEscansión</h2>
@@ -59,9 +59,11 @@ The directory 'utils' contains a file that can be used to test the library again
 
 ## Release History
 
+### 1.0.0pre2 (17/04/2023)
+
+- Solved diaereses identification issue
 
 ### 1.0.0pre1
-- First public release
 
 ## Meta
 

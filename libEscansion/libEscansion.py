@@ -2,7 +2,7 @@ import re
 import stanza
 from fonemas import Transcription
 from dataclasses import dataclass
-version = '1.0.0pre1'  # 14/04/2023
+version = '1.0.0pre2'  # 17/04/2023
 
 processor_dict = {'tokenize': 'ancora', 'mwt': 'ancora', 'pos': 'ancora',
                   'ner': 'ancora', 'depparse': 'ancora'}
@@ -509,7 +509,8 @@ class VerseMetre(PlayLine):
             for idy, syllable in enumerate(word):
                 if rg := re.search(r'([wj][AEOIaeoi])|([AEOIaeoi][wj])',
                                    syllable):
-                    if idy < ton or rg.group(1):
+                    if idy < ton or (rg.group(1) and
+                                     not rg.group(1).islower()):
                         diphthongs.append((idx, idy))
         return diphthongs
 
