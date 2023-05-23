@@ -226,10 +226,9 @@ class PlayLine:
                             txt not in PoSerrors:
                         ton = True
                 elif pos == 'ADV':
-                    if txt in ('tan', 'medio', 'aun'):
-                        pass
-                    elif (txt in ('ya') and ant == 'SCONJ' and
-                          idx + 1 != len(words)):
+                    if txt in ('tan', 'medio', 'aun') or (
+                        txt in ('ya') and ant == 'SCONJ'): # and
+                          #idx + 1 != len(words)):
                         pass
                     else:
                         ton = True
@@ -490,9 +489,9 @@ class VerseMetre(PlayLine):
                 preference -= 1
             if all(x.islower() is False for x in (coda, onset)):
                 preference -= 8
-        if coda[0] == 'y':
+        if coda[0] in 'yo':
             preference -= 1
-        if onset[-1] == 'y':
+        if onset[-1] in 'yo':
             preference += 1
         return preference
 
