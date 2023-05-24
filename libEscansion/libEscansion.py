@@ -1,5 +1,6 @@
 import re
 import stanza
+from math import sqrt
 from fonemas import Transcription
 from dataclasses import dataclass
 version = '1.0.0pre2'  # 17/04/2023
@@ -226,9 +227,10 @@ class PlayLine:
                             txt not in PoSerrors:
                         ton = True
                 elif pos == 'ADV':
-                    if txt in ('tan', 'medio', 'aun') or (
-                        txt in ('ya') and ant == 'SCONJ'): # and
-                          #idx + 1 != len(words)):
+                    if txt in ('tan', 'medio', 'aun') or (txt in 'ya' and
+                                                          ant == 'SCONJ'):
+                        #  and
+                        #  idx + 1 != len(words)):
                         pass
                     else:
                         ton = True
@@ -353,8 +355,7 @@ class VerseMetre(PlayLine):
             if s:
                 if all(x.islower() for x in (coda[0], onset[-1])) and \
                         coda[0] == onset[-1]:
-                    if any(x in (['o'], ['y']) and len(x) == 1
-                           for x in (word, ant)):
+                    if any(x in (['o'], ['y']) for x in (word, ant)):
                         preference -= 1
                     elif len(coda) > 1 and coda[1] in 'jwăĕŏ':
                         preference -= 2
@@ -688,8 +689,8 @@ class VerseMetre(PlayLine):
     def __vowel_distance(onset, coda):
         onset = onset.lower()
         coda = coda.strip('ʰ').lower()
-        return abs(trapez[onset[-1]][0] - trapez[coda[0]][0]) + abs(
-            trapez[onset[-1]][1] - trapez[coda[0]][1])
+        return sqrt(pow(abs(trapez[onset[-1]][0] - trapez[coda[0]][0]), 2) +
+                    pow(abs(trapez[onset[-1]][1] - trapez[coda[0]][1]), 2))
 
     @staticmethod
     def __adjust_position(word_list, position, offset):
