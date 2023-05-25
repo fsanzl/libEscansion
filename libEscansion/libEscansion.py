@@ -3,7 +3,7 @@ import stanza
 from math import sqrt
 from fonemas import Transcription
 from dataclasses import dataclass
-version = '1.0.0pre2'  # 17/04/2023
+version = '1.0.0pre3'  # 25/05/2023
 
 processor_dict = {'tokenize': 'ancora', 'mwt': 'ancora', 'pos': 'ancora',
                   'ner': 'ancora', 'depparse': 'ancora'}
@@ -18,12 +18,14 @@ values = {'A': 7, 'a': 6, 'ă': 5,
           'I': -2, 'i': -3, 'j': -4,
           'U': -5, 'u': -6, 'w': -7,
           'y': -2, 'X': -999}
-trapez = {'i': (-1, 1.25), 'e': (-0.5, 0), 'a': (0, -1.25), 'u': (1, 1.25),
-          'j': (-1, 1.25), 'ĕ': (-0.5, 0), 'ă': (0, -1.25), 'w': (1, 1.25),
-          'y': (-1, 1.25), 'o': (1, 0), 'ŏ': (1, 0)}
+trapez = {'i': (-1, 1), 'e': (-1, 0), 'a': (0, -1), 'u': (1, 1),
+          'j': (-1, 1), 'ĕ': (-1, 0), 'ă': (0, -1), 'w': (1, 1),
+          'y': (-1, 1), 'o': (1, 0), 'ŏ': (1, 0)}
+
+
 glides, close, med = 'wjăĕŏ', 'IUiuy', 'AEOaeo'
 vowels, vocalic = close + med, glides + close + med
-allvoc = vocalic + 'ʰy'
+allvoc = vocalic + 'ʰ'
 
 
 @dataclass
@@ -330,11 +332,9 @@ class VerseMetre(PlayLine):
                         and coda[0] in 'AEIOU':
                     preference -= 8
                 if word in [[x] for x in 'ei'] and len(words) > idx + 2:
-                    if onset[-1] in allvoc:
-                        if not words[idx+1][0][0] in allvoc:
-                            s = True
-                elif all(phoneme in allvoc for phoneme in
-                         [onset[-1], coda[0]]):
+                    if not words[idx+1][0][0] in allvoc:
+                        s = True
+                else:
                     val = values[onset[-1]]
                     if len(onset) > 1 and onset[-2] in values:
                         previous_val = values[onset[-2]]
@@ -645,8 +645,11 @@ class VerseMetre(PlayLine):
                         'j': 'j', 'w': 'w', 'ă': 'ă', 'ĕ': 'ĕ', 'ŏ': 'ŏ',
                         'y': 'ʝ'}
         onset, coda = diphthong[0], diphthong[1]  # .replace('ʰ', '')
-        if onset[-1] == coda[0]:
-            diphthong = onset[:-1] + coda
+        if non_syllabic[onset[-1]] == non_syllabic[coda[0]]:
+            if coda[0] in glides or onset[-1].isupper():
+                diphthong = onset + coda[1:]
+            else:
+                diphthong = onset[:-1] + coda
         elif onset == 'y' or (onset == 'i' and coda.startswith('u')):
             diphthong = 'ʝ' + coda
         elif values[onset[-1]] > values[coda[0]]:
@@ -655,7 +658,8 @@ class VerseMetre(PlayLine):
                              non_syllabic[coda[0]] + coda[1:])
             else:
                 diphthong = (onset[:-1] + onset[-1] +
-                             non_syllabic[coda[0]] + coda[1:])
+                             non_syllabic[coda[0]].replace('ʝ', 'j')
+                             + coda[1:])
         else:
             if onset[-1].isupper():
                 diphthong = (onset[:-1] + non_syllabic[onset[-1]] +
@@ -689,8 +693,10 @@ class VerseMetre(PlayLine):
     def __vowel_distance(onset, coda):
         onset = onset.lower()
         coda = coda.strip('ʰ').lower()
-        return sqrt(pow(abs(trapez[onset[-1]][0] - trapez[coda[0]][0]), 2) +
-                    pow(abs(trapez[onset[-1]][1] - trapez[coda[0]][1]), 2))
+        distance = sqrt(pow(abs(trapez[onset[-1]][0] - trapez[coda[0]][0]), 2)
+                        + pow(abs(trapez[onset[-1]][1] -
+                                  trapez[coda[0]][1]), 2))
+        return distance
 
     @staticmethod
     def __adjust_position(word_list, position, offset):
