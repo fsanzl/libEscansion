@@ -3,7 +3,7 @@ import stanza
 from math import sqrt
 from fonemas import Transcription
 from dataclasses import dataclass
-version = '1.0.0pre3'  # 25/05/2023
+version = '1.0.0pre4'  # 20/06/2023
 
 processor_dict = {'tokenize': 'ancora', 'mwt': 'ancora', 'pos': 'ancora',
                   'ner': 'ancora', 'depparse': 'ancora'}
@@ -17,12 +17,15 @@ values = {'A': 7, 'a': 6, 'ă': 5,
           'E': 1, 'e': 0, 'ĕ': -1,
           'I': -2, 'i': -3, 'j': -4,
           'U': -5, 'u': -6, 'w': -7,
-          'y': -2, 'X': -999}
+          'y': -2, 'X': -999, '': -1000}
 trapez = {'i': (-1, 1), 'e': (-1, 0), 'a': (0, -1), 'u': (1, 1),
           'j': (-1, 1), 'ĕ': (-1, 0), 'ă': (0, -1), 'w': (1, 1),
           'y': (-1, 1), 'o': (1, 0), 'ŏ': (1, 0)}
-
-
+non_syllabic = {'a': 'ă', 'e': 'ĕ', 'i': 'j', 'o': 'ŏ', 'u': 'w',
+                'A': 'ă', 'E': 'ĕ', 'I': 'j', 'O': 'ŏ', 'U': 'w',
+                'j': 'j', 'w': 'w', 'ă': 'ă', 'ĕ': 'ĕ', 'ŏ': 'ŏ',
+                'y': 'ʝ'}
+indeed_syllabic = {'ă': 'a', 'ĕ': 'e', 'j': 'i', 'ŏ': 'o', 'w': 'u'}
 glides, close, med = 'wjăĕŏ', 'IUiuy', 'AEOaeo'
 vowels, vocalic = close + med, glides + close + med
 allvoc = vocalic + 'ʰ'
@@ -638,35 +641,54 @@ class VerseMetre(PlayLine):
         return words
 
     @staticmethod
-    def __apply_synaloephas(diphthong):
+    def __perception(chain, may=False):
+        max = -999
+        for x in chain:
+            if x in non_syllabic and values[x] > max:
+                max = values[x]
+        chain = list(chain)
+        for i, x in enumerate(chain):
+            if x in non_syllabic:
+                if values[x] < max:
+                    chain[i] = non_syllabic[x]
+                else:
+                    chain[i] = indeed_syllabic[x]
+        chain = ''.join(chain)
+        if may:
+            for j in 'aeo':
+                chain = chain.replace(j, j.upper())
+        return chain
+
+    def __apply_synaloephas(self, diphthong):
         diphthong[1] = diphthong[1].replace('ʰ', '')
-        non_syllabic = {'a': 'ă', 'e': 'ĕ', 'i': 'j', 'o': 'ŏ', 'u': 'w',
-                        'A': 'ă', 'E': 'ĕ', 'I': 'j', 'O': 'ŏ', 'U': 'w',
-                        'j': 'j', 'w': 'w', 'ă': 'ă', 'ĕ': 'ĕ', 'ŏ': 'ŏ',
-                        'y': 'ʝ'}
         onset, coda = diphthong[0], diphthong[1]  # .replace('ʰ', '')
+        onsetb = ''.join([non_syllabic[x] if x in non_syllabic else x
+                          for x in onset])
+        codab = ''.join([non_syllabic[x] if x in non_syllabic else x
+                         for x in coda])
         if non_syllabic[onset[-1]] == non_syllabic[coda[0]]:
             if coda[0] in glides or onset[-1].isupper():
                 diphthong = onset + coda[1:]
             else:
                 diphthong = onset[:-1] + coda
+        elif len([x for x in onset + coda if x in non_syllabic]) > 2:
+            tonic = any(x.isupper() for x in onset + coda)
+            diphthong = self.__perception(onsetb + codab.replace('ʝ', 'j'),
+                                          tonic)
         elif onset == 'y' or (onset == 'i' and coda.startswith('u')):
             diphthong = 'ʝ' + coda
+        elif any(x.isupper() for x in coda) and all(x.islower()
+                                                    for x in onset):
+            diphthong = onsetb + coda
+        elif any(x.isupper() for x in onset) and all(x.islower()
+                                                     for x in coda):
+            diphthong = onset + codab
+        elif all(x.islower() for x in onset + coda):
+            diphthong = onsetb + coda
         elif values[onset[-1]] > values[coda[0]]:
-            if coda[0].isupper():
-                diphthong = (onset[:-1] + onset[-1].upper() +
-                             non_syllabic[coda[0]] + coda[1:])
-            else:
-                diphthong = (onset[:-1] + onset[-1] +
-                             non_syllabic[coda[0]].replace('ʝ', 'j')
-                             + coda[1:])
+            diphthong = onset + codab.replace('ʝ', 'j')
         else:
-            if onset[-1].isupper():
-                diphthong = (onset[:-1] + non_syllabic[onset[-1]] +
-                             coda[0].upper() + coda[1:])
-            else:
-                diphthong = (onset[:-1] + non_syllabic[onset[-1]] +
-                             coda[0] + coda[1:])
+            diphthong = onsetb + coda
         return diphthong
 
     #   Required by __apply_hiatus
