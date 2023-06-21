@@ -3,7 +3,7 @@ import stanza
 from math import sqrt
 from fonemas import Transcription
 from dataclasses import dataclass
-version = '1.0.0pre4'  # 21/06/2023
+version = '1.0.0pre4'  #  21/06/2023
 
 processor_dict = {'tokenize': 'ancora', 'mwt': 'ancora', 'pos': 'ancora',
                   'ner': 'ancora', 'depparse': 'ancora'}
