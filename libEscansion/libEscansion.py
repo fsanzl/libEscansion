@@ -3,7 +3,7 @@ import stanza
 from math import sqrt
 from fonemas import Transcription
 from dataclasses import dataclass
-version = '1.0.0pre4'  # 20/06/2023
+version = '1.0.0pre4'  # 21/06/2023
 
 processor_dict = {'tokenize': 'ancora', 'mwt': 'ancora', 'pos': 'ancora',
                   'ner': 'ancora', 'depparse': 'ancora'}
@@ -356,8 +356,7 @@ class VerseMetre(PlayLine):
                                 values[coda[0]] >= next_val):
                         s = True
             if s:
-                if all(x.islower() for x in (coda[0], onset[-1])) and \
-                        coda[0] == onset[-1]:
+                if (coda[0] + onset[-1]).islower() and coda[0] == onset[-1]:
                     if any(x in (['o'], ['y']) for x in (word, ant)):
                         preference -= 1
                     elif len(coda) > 1 and coda[1] in 'jwăĕŏ':
@@ -487,11 +486,11 @@ class VerseMetre(PlayLine):
             coda = coda.strip('ʰ')
         if coda.islower() and onset.islower():
             preference += 4
-        elif any(x.islower() is False for x in (coda, onset)):
+        elif not (coda + onset).islower():
             preference -= 2
             if any(y in x for y in 'UI' for x in (coda, onset)):
                 preference -= 1
-            if all(x.islower() is False for x in (coda, onset)):
+            if (coda + onset).isupper():
                 preference -= 8
         if coda[0] in 'yo':
             preference -= 1
@@ -581,7 +580,7 @@ class VerseMetre(PlayLine):
     def __find_rhyme(word):
         offset, tonic = {-1: 1, -2: 0, -3: -1}, -1
         for idx, syllable in enumerate(word[::-1]):
-            if any([phoneme.isupper() for phoneme in syllable]):
+            if not syllable.islower():
                 tonic = -idx - 1
                 for jdx, phoneme in enumerate(syllable):
                     if phoneme.isupper():
@@ -672,20 +671,13 @@ class VerseMetre(PlayLine):
             else:
                 diphthong = onset[:-1] + coda
         elif len([x for x in onset + coda if x in non_syllabic]) > 2:
-            tonic = any(x.isupper() for x in onset + coda)
+            tonic = not (onset + coda).islower()
             diphthong = self.__perception(onsetb + codab.replace('ʝ', 'j'),
                                           tonic)
         elif onset == 'y' or (onset == 'i' and coda.startswith('u')):
             diphthong = 'ʝ' + coda
-        elif any(x.isupper() for x in coda) and all(x.islower()
-                                                    for x in onset):
-            diphthong = onsetb + coda
-        elif any(x.isupper() for x in onset) and all(x.islower()
-                                                     for x in coda):
-            diphthong = onset + codab
-        elif all(x.islower() for x in onset + coda):
-            diphthong = onsetb + coda
-        elif values[onset[-1]] > values[coda[0]]:
+        elif not onset.islower() and (coda.islower() or
+                                      values[onset[-1]] > values[coda[0]]):
             diphthong = onset + codab.replace('ʝ', 'j')
         else:
             diphthong = onsetb + coda
