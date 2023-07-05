@@ -3,7 +3,7 @@ import stanza
 from math import sqrt
 from fonemas import Transcription
 from dataclasses import dataclass
-version = '1.0.0pre4'  #  21/06/2023
+version = '1.0.0pre5'  # 5/07/2023
 
 processor_dict = {'tokenize': 'ancora', 'mwt': 'ancora', 'pos': 'ancora',
                   'ner': 'ancora', 'depparse': 'ancora'}
@@ -444,7 +444,7 @@ class VerseMetre(PlayLine):
         rhyme = self.__find_rhyme(syllables[-1])
         len_rhyme = len(self.__flatten(syllables)) + rhyme['count']
         if len_rhyme > expected[0]:
-            verse = self.__adjust_metre(syllables, expected[1:])
+            verse = self.__adjust_metre(sllbls, expected[1:])
         elif len_rhyme < expected[0]:
             verse = self.__adjust_metre(sllbls, expected[1:])
         else:

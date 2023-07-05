@@ -13,7 +13,7 @@ install_requires = ['silabeador', 'stanza']
 # This call to setup() does all the work
 setup(
     name="libEscansion",
-    version="1.0.0-2",
+    version="1.0.0-5",
     python_requires='>=3.5',
     description="Metrical scansion for Spanish verses",
     long_description=README,
