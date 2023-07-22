@@ -78,7 +78,6 @@ class PlayLine:
             transcription = re.sub(r'\[|\]|¿|¡|^\s*[\.\,]', '', transcription)
             transcription = re.sub(r'\s*\.[\.\s]+', ', ', transcription)
             transcription = transcription.strip()
-            # transcription = transcription[0].upper()+transcription[1:]
         verse = nlp(f'{transcription}')
         transcription = []
         for sentence in verse.sentences:
@@ -185,7 +184,7 @@ class PlayLine:
                 ton = True
             elif txt in conjat:
                 pass
-            elif txt.lower() in ['oh', 'ay']:        # ADSO 100
+            elif txt.lower() in ['oh', 'ay']:  # ADSO 100
                 ant = ''
                 if not self.adso:
                     ton = True
@@ -234,8 +233,6 @@ class PlayLine:
                 elif pos == 'ADV':
                     if txt in ('tan', 'medio', 'aun') or (txt in 'ya' and
                                                           ant == 'SCONJ'):
-                        #  and
-                        #  idx + 1 != len(words)):
                         pass
                     else:
                         ton = True
@@ -256,8 +253,6 @@ class PlayLine:
                         pass
                     else:
                         ton = True
-                # elif txt == 'para' and ant == 'ADV':
-                #    ton = True
                 elif txt in tonicos or pos in stressed_pos:
                     ton = True
             word.ton = ton
@@ -324,7 +319,6 @@ class VerseMetre(PlayLine):
         synaloephas, ant = [], ['X']
         preference = offset = 0
         for idx, word in enumerate(words):
-            # Canellada & Madsen, p. 54
             coda = word[0].replace('ʰ', '')
             onset = ant[-1]
             s = False
@@ -475,7 +469,6 @@ class VerseMetre(PlayLine):
                 metre.append('-')
         return ''.join(metre)
 
-    # Required by __find_synaloephas
     def __synaloepha_pref(self, onset, coda, preference=0):
         distance = self.__vowel_distance(onset, coda)
         onset = ''.join([x for x in onset if x in allvoc])
@@ -498,7 +491,6 @@ class VerseMetre(PlayLine):
             preference += 1
         return preference
 
-    # Required by __adjust_metre
     @staticmethod
     def __find_hiatuses(words):
         diphthongs = []
@@ -603,7 +595,6 @@ class VerseMetre(PlayLine):
         return {'stress': tonic, 'count': offset[tonic],
                 'assonance': assonance, 'consonance': consonance}
 
-    #   Required by __synaloephas
     def __adjust_syllables(self, words, synaloephas):
         synaloephas_list = [syllable[0] for syllable in synaloephas]
         if synaloephas_list:
@@ -660,7 +651,7 @@ class VerseMetre(PlayLine):
 
     def __apply_synaloephas(self, diphthong):
         diphthong[1] = diphthong[1].replace('ʰ', '')
-        onset, coda = diphthong[0], diphthong[1]  # .replace('ʰ', '')
+        onset, coda = diphthong[0], diphthong[1]
         onsetb = ''.join([non_syllabic[x] if x in non_syllabic else x
                           for x in onset])
         codab = ''.join([non_syllabic[x] if x in non_syllabic else x
@@ -683,7 +674,6 @@ class VerseMetre(PlayLine):
             diphthong = onsetb + coda
         return diphthong
 
-    #   Required by __apply_hiatus
     @staticmethod
     def __hiatus_preference(words, hiatuses):
         preference = []
@@ -698,7 +688,6 @@ class VerseMetre(PlayLine):
                     preference[-idx-1] = (second[0], second[1]+1)
         return preference
 
-    # AUXILIARY METHODS
     @staticmethod
     def __flatten(thelist):
         return [item for sublist in thelist for item in sublist]
