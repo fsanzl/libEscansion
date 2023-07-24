@@ -7,13 +7,13 @@ HERE = pathlib.Path(__file__).parent
 # The text of the README file
 README = (HERE / "README.md").read_text()
 
-install_requires = ['silabeador', 'stanza']
+install_requires = ['silabeador', 'stanza', 'fonemas']
 
 
 # This call to setup() does all the work
 setup(
     name="libEscansion",
-    version="1.0.0-5",
+    version="1.0.0",
     python_requires='>=3.5',
     description="Metrical scansion for Spanish verses",
     long_description=README,

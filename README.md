@@ -9,7 +9,7 @@
 <h3 align="center">A Python library for for metrical scansion of mixed Spanish verses</h2>
 
 
-*libEscansión* is a state-of-the-art Python library for analysing Spanish mixed verses. It parses the verse to find syllabic nuclei, rhythmic pattern, assonance, and consonance, as well as to  provide a phonological transcription of the syllables. It scores 98.64% accuracy against the manually annotated corpus [ADSO 100] with the option *adso=True*, which forces considering interjections as non-stressed to meet ADSO's annotation criteria. This tops the until-now state-of-the-art. Nevertheless, vanilla scansion – i.e., stressing interjections – still outperforms the state-of-the art, achieving 96.8% accuracy. Furthermore, after evaluating the corpus' manual scansion and spelling, we found that the disagreement was in most cases due to an improper spelling or even to non-standard human  analysis (unstressed interjections, adverbd in -mente lacking secondary stress, etc.). With a corrected corpus, the agreement reaches 99.13 %, being the resting 0.87% non-erroneus disagreements.
+*libEscansión* is a state-of-the-art Python library for analysing Spanish mixed verses. It parses the verse to find syllabic nuclei, rhythmic pattern, assonance, and consonance, as well as to  provide a phonological transcription of the syllables. It scores 98.64% accuracy against the manually annotated corpus [ADSO 100] with the option *adso=True*, which forces considering interjections as non-stressed to meet ADSO's annotation criteria. This tops the until-now state-of-the-art. Nevertheless, vanilla scansion – i.e., stressing interjections – still outperforms the state-of-the art, achieving 97.01% accuracy. Furthermore, after evaluating the corpus' manual scansion and spelling, we found that the disagreement was in most cases due to an improper spelling or even to non-standard human  analysis (unstressed interjections, adverbd in -mente lacking secondary stress, etc.). With a corrected corpus, the agreement reaches 99.13 %, being the resting 0.87% non-erroneus disagreements.
 
 This library is part of the research project [Sound and Meaning in Spanish Golden Age Literature](https://soundandmeaning.univie.ac.at/). It was created as a means to generate a corpus of parsed metres, which is publicicily accessible [here](https://soundandmeaning.univie.ac.at/?page_id=175)
 
@@ -59,6 +59,10 @@ The directory 'utils' contains a file that can be used to test the library again
 
 ## Release History
 
+### 1.0.0 (24/07/2023)
+
+- First public version
+
 ### 1.0.0pre5 (5/07/2023)
 
 - Solved bug with less syllables than expected
@@ -73,9 +77,25 @@ The directory 'utils' contains a file that can be used to test the library again
 
 ### 1.0.0pre1
 
+## How to cite libEscansión
+Authors of scientific papers including results generated using libEscansión are encouraged to cite the following paper.
+
+```xml
+@article{SanzLazaroF_RHD2023, 
+    author    = {Sanz-L\'azaro, Fernando},
+    title     = {},
+    pages     = {},
+    volume    = {8},
+    number    = {1},
+    year      = {2023},
+    journal   = {Revista de Humanidades Digitales},
+    doi       = {},
+}
+```
+
 ## Meta
 
-Fernando Sanz-Lázaro – [@FerdlSanz](https://twitter.com/ferdlsanz) – fsanzl@gmail.com
+Copyright 2023 Fernando Sanz-Lázaro – [@FerdlSanz](https://twitter.com/ferdlsanz) – fsanzl@gmail.com
 
 Distributed under the LGPL 2.1 license. See ``LICENSE`` for more information.
 
