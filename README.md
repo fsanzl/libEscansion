@@ -88,7 +88,7 @@ Authors of scientific papers including results generated using *libEscansión* a
     author    = {Sanz-L\'azaro, Fernando},
     title     = {Del fonema al verso: una caja de herramientas digitales de escansi\'on teatral},
     volume    = {8},
-    year      = {inpress},
+    pubstate  = {inpress},
     journal   = {Revista de Humanidades Digitales},
 }
 ```
