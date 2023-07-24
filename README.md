@@ -65,17 +65,19 @@ The directory 'utils' contains a file that can be used to test the library again
 
 ### 1.0.0pre5 (5/07/2023)
 
-- Solved bug with less syllables than expected
+- Solved bug with fewer syllables than expected
 
 ### 1.0.0pre4 (20/06/2023)
 
-- Rules diphthong vs perception for tripthong
+- Rules diphthong vs perception for triphthong
 
 ### 1.0.0pre2 (17/04/2023)
 
 - Solved diaereses identification issue
 
 ### 1.0.0pre1
+
+- Initial arrangement of the directory tree, metadata, &c. to make the mess more presentable in public
 
 ## How to cite libEscansión
 Authors of scientific papers including results generated using libEscansión are encouraged to cite the following paper.
