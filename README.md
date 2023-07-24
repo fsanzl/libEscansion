@@ -79,8 +79,9 @@ The directory 'utils' contains a file that can be used to test the library again
 
 - Initial arrangement of the directory tree, metadata, &c. to make the mess more presentable in public
 
-## How to cite libEscansión
-Authors of scientific papers including results generated using libEscansión are encouraged to cite the following paper.
+## How to cite *libEscansión*
+
+Authors of scientific papers including results generated using *libEscansión* are encouraged to cite the following paper.
 
 ```xml
 @article{SanzLazaroF_RHD2023, 
