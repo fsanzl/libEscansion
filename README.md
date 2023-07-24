@@ -109,6 +109,16 @@ Distributed under the LGPL 2.1 license. See ``LICENSE`` for more information.
 4. Push to the branch (`git push origin feature/fooBar`)
 5. Create a new Pull Request
 
+## Copyright
+
+Copyright (C) 2023 Fernando Sanz-Lázaro <<fsanzl@gmail.com>>
+
+This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with this library. If not, see <<https://www.gnu.org/licenses/>>.
+
 ## References
 
 ADSO 100: Navarro-Colorado, Borja; Ribes Lafoz, María, and Sánchez, Noelia (2015) "Metrical annotation of a large corpus of Spanish sonnets: representation, scansion and evaluation" 10th edition of the Language Resources and Evaluation Conference 2016 Portorož, Slovenia. ([PDF](http://www.dlsi.ua.es/~borja/navarro2016_MetricalPatternsBank.pdf))
