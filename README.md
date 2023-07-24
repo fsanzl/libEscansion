@@ -83,13 +83,10 @@ Authors of scientific papers including results generated using libEscansión are
 ```xml
 @article{SanzLazaroF_RHD2023, 
     author    = {Sanz-L\'azaro, Fernando},
-    title     = {},
-    pages     = {},
+    title     = {Del fonema al verso: una caja de herramientas digitales de escansi\'on teatral},
     volume    = {8},
-    number    = {1},
-    year      = {2023},
+    year      = {inpress},
     journal   = {Revista de Humanidades Digitales},
-    doi       = {},
 }
 ```
 
