@@ -83,7 +83,7 @@ The directory 'utils' contains a file that can be used to test the library again
 
 Authors of scientific papers including results generated using *libEscansión* are encouraged to cite the following paper.
 
-```xml
+```bibtex
 @article{SanzLazaroF_RHD2023, 
     author    = {Sanz-Lázaro, Fernando},
     title     = {Del fonema al verso: una caja de herramientas digitales de escansión teatral},
