@@ -1,0 +1,4 @@
+stanza == 1.7.0
+fonemas == 2.0.18
+silabeador >= 1.1.11.post6
+
