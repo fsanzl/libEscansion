@@ -1,8 +1,8 @@
 # LibEscansión
 > A metrical scansion library for Spanish
 [![License: LGPL](https://img.shields.io/github/license/fsanzl/fonemas)](https://opensource.org/licenses/LGPL-2.1)
-[![Version: 1.0.0-2](https://img.shields.io/github/v/release/fsanzl/fonemas)](https://github.com/fsanzl/libEscansion/releases/tag/1.0.0)
-[![Python versions: 3.9](https://img.shields.io/pypi/pyversions/fonemas)](https://www.python.org/downloads/release/python-390/)
+[![Version: 1.0.1](https://img.shields.io/github/v/release/fsanzl/fonemas)](https://github.com/fsanzl/libEscansion/releases/tag/1.0.1)
+[![Python versions: 3.11](https://img.shields.io/pypi/pyversions/fonemas)](https://www.python.org/downloads/release/python-311/)
 
 <h2 align="center">libEscansión</h2>
 
@@ -20,13 +20,13 @@ This library is part of the research project [Sound and Meaning in Spanish Golde
 pip install libEscansion
 ```
 
-Alternatively, the lasr 
 ## Requeriments
 
 Following libraries are required:
 
-* *stanza* >= 1.4.2 with Spanish language models
-* *fonemas* >= 2.0.16
+* *stanza* >= 1.7 with Spanish language models
+* *fonemas* >= 2.0.18
+* *silabeador* >= 1.1.11.post6 
 
 
 
