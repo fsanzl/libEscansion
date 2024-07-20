@@ -5,9 +5,14 @@ from fonemas import Transcription
 from dataclasses import dataclass
 version = '1.0.0pre5'  # 5/07/2023
 
-processor_dict = {'tokenize': 'ancora', 'mwt': 'ancora', 'pos': 'ancora',
-                  'ner': 'ancora', 'depparse': 'ancora'}
-conf = {'lang':  'es', 'processors': processor_dict, 'download_method': 'None'}
+processor_dict = {'tokenize': 'ancora',
+                  'mwt': 'ancora',
+                  'pos': 'ancora',
+                  'ner': 'ancora',
+                  'depparse': 'ancora'}
+conf = {'lang':  'es',
+        'processors': processor_dict,
+        'download_method': 'None'}
 nlp = stanza.Pipeline(**conf, logging_level='ERROR')
 usuals = ('xueθ', 'suab', 'kɾuel', 'fiel', 'ruina', 'diabl', 'dios', 'kae',
           'rios', 'biɾtuos', 'kɾio', 'ʰuid', 'poɾfiad')
@@ -141,7 +146,7 @@ class PlayLine:
     def __fix_word(self, word):
         if word.pos == 'PUNCT' and any(x.isalpha() for x in word.text):
             word.pos = 'ADJ'
-        return(word)
+        return word
 
     def __find_prosodic_stress(self, words):
         stressed_pos = ['ADV', 'NOUN', 'PROPN',
@@ -329,7 +334,7 @@ class VerseMetre(PlayLine):
                         and coda[0] in 'AEIOU':
                     preference -= 8
                 if word in [[x] for x in 'ei'] and len(words) > idx + 2:
-                    if not words[idx+1][0][0] in allvoc:
+                    if not words[idx + 1][0][0] in allvoc:
                         s = True
                 else:
                     val = values[onset[-1]]
@@ -342,12 +347,10 @@ class VerseMetre(PlayLine):
                     else:
                         next_val = values[coda[0]]
                     if (previous_val <= val and val <= values[coda[0]]) or (
-                                previous_val >= val and
-                                val >= values[coda[0]] and
-                                next_val <= values[coda[0]]) or (
-                                previous_val <= val and
-                                val > values[coda[0]] and
-                                values[coda[0]] >= next_val):
+                        previous_val >= val and val >= values[coda[0]] and
+                        next_val <= values[coda[0]]) or (
+                            previous_val <= val and val > values[coda[0]] and
+                            values[coda[0]] >= next_val):
                         s = True
             if s:
                 if (coda[0] + onset[-1]).islower() and coda[0] == onset[-1]:
@@ -473,7 +476,7 @@ class VerseMetre(PlayLine):
         distance = self.__vowel_distance(onset, coda)
         onset = ''.join([x for x in onset if x in allvoc])
         coda = ''.join([x for x in coda if x in allvoc])
-        preference -= 2*(len(onset) + len(coda) - 2 + distance)
+        preference -= 2 * (len(onset) + len(coda) - 2 + distance)
         if coda.startswith('ʰ'):
             preference -= 2
             coda = coda.strip('ʰ')
@@ -560,7 +563,7 @@ class VerseMetre(PlayLine):
             count += 1
             syllables = self.__adjust_syllables(syllables,
                                                 potential_synaloephas[:1])
-            syllables = self.__synaloephas(syllables, offset-1, count)
+            syllables = self.__synaloephas(syllables, offset - 1, count)
         return syllables
 
     @staticmethod
@@ -576,8 +579,8 @@ class VerseMetre(PlayLine):
                 tonic = -idx - 1
                 for jdx, phoneme in enumerate(syllable):
                     if phoneme.isupper():
-                        coda = word[(idx+1)*-1:]
-                        coda[(idx+1)*-1] = syllable[jdx:]
+                        coda = word[(idx + 1) * -1:]
+                        coda[(idx + 1) * -1] = syllable[jdx:]
                         break
                 break
             else:
@@ -615,13 +618,13 @@ class VerseMetre(PlayLine):
                 word = onset + diphthong
                 if len(words[i_word2]) > 1:
                     word = word + coda
-                words = (words[:i_word1] + [word] + words[i_word2+1:])
+                words = (words[:i_word1] + [word] + words[i_word2 + 1:])
                 synaloephas_list = self.__adjust_position(
                     synaloephas_list[1:], synaloephas_list[0], len(onset))
             else:
                 i_syllable2 = i_syllable1 + 1
                 onset = words[i_word1][:i_syllable1]
-                coda = words[i_word1][i_syllable2+1:]
+                coda = words[i_word1][i_syllable2 + 1:]
                 diphthong = self.__apply_synaloephas(joint)
                 word = onset + [diphthong] + coda
                 words[i_word1] = word
@@ -683,9 +686,9 @@ class VerseMetre(PlayLine):
             else:
                 preference += [idx]
         for idx, second in enumerate(reversed(preference)):
-            for first in preference[:-idx-1]:
+            for first in preference[:-idx - 1]:
                 if first[0] == second[0] and first[1] < second[1]:
-                    preference[-idx-1] = (second[0], second[1]+1)
+                    preference[-idx - 1] = (second[0], second[1] + 1)
         return preference
 
     @staticmethod
