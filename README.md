@@ -88,14 +88,14 @@ The directory 'utils' contains a file that can be used to test the library again
 Authors of scientific papers including results generated using *libEscansión* are encouraged to cite the following paper.
 
 ```bibtex
-@article{SanzLazaroF_RHD2023, 
+@article{SanzLazaroF_DHQ2024183, 
     author    = {Sanz-Lázaro, Fernando},
-    title     = {Del fonema al verso: una caja de herramientas digitales de escansión teatral},
-    volume    = {8},
-    date  = {2023},
-    journal   = {Revista de Humanidades Digitales},
-    pages = {74-89},
-    doi = {https://doi.org/10.5944/rhd.vol.8.2023.37830}
+    title     = {libEscansión: A Recursive Precedence Approach to Metrical Scansion},
+    volume    = {18},
+    number    = {3},
+    date  = {2024},
+    journal   = {Digital Humanities Quarterly},
+    url = {[https://doi.org/10.5944/rhd.vol.8.2023.37830](https://digitalhumanities.org/dhq/vol/18/3/000739/000739.html)}
 }
 ```
 
