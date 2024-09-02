@@ -1,7 +1,7 @@
 # LibEscansión
 > A metrical scansion library for Spanish
 [![License: LGPL](https://img.shields.io/github/license/fsanzl/fonemas)](https://opensource.org/licenses/LGPL-2.1)
-[![Version: 1.0.1](https://img.shields.io/github/v/release/fsanzl/fonemas)](https://github.com/fsanzl/libEscansion/releases/tag/1.0.1)
+[![Version: 1.1.0](https://img.shields.io/github/v/release/fsanzl/fonemas)](https://github.com/fsanzl/libEscansion/releases/tag/1.0.1)
 [![Python versions: 3.11](https://img.shields.io/pypi/pyversions/fonemas)](https://www.python.org/downloads/release/python-311/)
 
 <h2 align="center">libEscansión</h2>
@@ -58,6 +58,10 @@ The directory 'utils' contains a file that can be used to test the library again
 ```
 
 ## Release History
+
+### 1.1.0 (02/09/2024)
+
+- Optimisation and documentation with AI
 
 ### 1.0.0 (24/07/2023)
 
