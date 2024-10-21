@@ -129,6 +129,8 @@ You should have received a copy of the GNU Lesser General Public License along w
 
 ADSO 100: Navarro-Colorado, Borja; Ribes Lafoz, María, and Sánchez, Noelia (2015) "Metrical annotation of a large corpus of Spanish sonnets: representation, scansion and evaluation" 10th edition of the Language Resources and Evaluation Conference 2016 Portorož, Slovenia. ([PDF](http://www.dlsi.ua.es/~borja/navarro2016_MetricalPatternsBank.pdf))
 
+Sanz-Lázaro, Fernando (2024) "libEscansión: A Recursive Precedence Approach to Metrical Scansion" Digital Humanitiea Quarterly. ([https://digitalhumanities.org/dhq/vol/18/3/000739/000739.html](https://digitalhumanities.org/dhq/vol/18/3/000739/000739.html))
+
 
 <!-- Markdown link & img dfn's -->
 [license]: https://img.shields.io/github/license/fsanzl/libEscansion
