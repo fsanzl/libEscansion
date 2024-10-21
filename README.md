@@ -95,7 +95,7 @@ Authors of scientific papers including results generated using *libEscansión* a
     number    = {3},
     date  = {2024},
     journal   = {Digital Humanities Quarterly},
-    url = {[https://doi.org/10.5944/rhd.vol.8.2023.37830](https://digitalhumanities.org/dhq/vol/18/3/000739/000739.html)}
+    url = {https://digitalhumanities.org/dhq/vol/18/3/000739/000739.html}
 }
 ```
 
