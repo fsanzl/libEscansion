@@ -9,9 +9,9 @@
 <h3 align="center">A Python library for for metrical scansion of mixed Spanish verses</h2>
 
 
-*libEscansión* is a state-of-the-art Python library for analysing Spanish mixed verses. It parses the verse to find syllabic nuclei, rhythmic pattern, assonance, and consonance, as well as to  provide a phonological transcription of the syllables. It scores 98.64% accuracy against the manually annotated corpus ADSO 100 ([Navarro-Colorado]) with the option *adso=True*, which forces considering interjections as non-stressed to meet ADSO's annotation criteria. This tops the until-now state-of-the-art. Nevertheless, vanilla scansion – i.e., stressing interjections – still outperforms the state-of-the art, achieving 97.01% accuracy. Furthermore, after evaluating the corpus' manual scansion and spelling, we found that the disagreement was in most cases due to an improper spelling or even to non-standard human  analysis (unstressed interjections, adverbd in -mente lacking secondary stress, etc.). With a corrected corpus, the agreement reaches 99.13 %, being the resting 0.87% non-erroneus disagreements.
+*libEscansión* is a state-of-the-art Python library for analysing Spanish mixed verses. It parses the verse to find syllabic nuclei, rhythmic pattern, assonance, and consonance, as well as to  provide a phonological transcription of the syllables. It scores 98.64% accuracy against the manually annotated corpus ADSO 100 [[1]] with the option *adso=True*, which forces considering interjections as non-stressed to meet ADSO's annotation criteria. This tops the until-now state-of-the-art. Nevertheless, vanilla scansion – i.e., stressing interjections – still outperforms the state-of-the art, achieving 97.01% accuracy. Furthermore, after evaluating the corpus' manual scansion and spelling, we found that the disagreement was in most cases due to an improper spelling or even to non-standard human  analysis (unstressed interjections, adverbd in -mente lacking secondary stress, etc.). With a corrected corpus, the agreement reaches 99.13 %, being the resting 0.87% non-erroneus disagreements.
 
-This library is part of the research project [Sound and Meaning in Spanish Golden Age Literature](https://soundandmeaning.univie.ac.at/). It was created as a means to generate a corpus of parsed metres, which is publicicily accessible [here](https://soundandmeaning.univie.ac.at/?page_id=175). Theoretical insights can be found elsewhere ([Sanz-Lázaro]).
+This library is part of the research project [Sound and Meaning in Spanish Golden Age Literature](https://soundandmeaning.univie.ac.at/). It was created as a means to generate a corpus of parsed metres, which is publicicily accessible [here](https://soundandmeaning.univie.ac.at/?page_id=175). Theoretical insights can be found elsewhere [[2]].
 
 
 ## Installation
@@ -126,11 +126,14 @@ This library is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU Lesser General Public License along with this library. If not, see <<https://www.gnu.org/licenses/>>.
 
 ## References
+[1] Navarro-Colorado, Borja; Ribes Lafoz, María, and Sánchez, Noelia (2015). 'Metrical annotation of a large corpus of Spanish sonnets: representation, scansion and evaluation'. In: 10th edition of the Language Resources and Evaluation Conference 2016 Portorož, Slovenia.
 
-[Navarro-Colorado]: http://www.dlsi.ua.es/~borja/navarro2016_MetricalPatternsBank.pdf
+[2] Sanz-Lázaro, Fernando (2024). 'libEscansión: A Recursive Precedence Approach to Metrical Scansion'. Digital Humanities Quarterly 18(3).
+
+[1]: http://www.dlsi.ua.es/~borja/navarro2016_MetricalPatternsBank.pdf
 "Navarro-Colorado, Borja; Ribes Lafoz, María, and Sánchez, Noelia (2015). 'Metrical annotation of a large corpus of Spanish sonnets: representation, scansion and evaluation'. In: 10th edition of the Language Resources and Evaluation Conference 2016 Portorož, Slovenia."
 
-[Sanz-Lázaro]: https://digitalhumanities.org/dhq/vol/18/3/000739/000739.html "Sanz-Lázaro, Fernando (2024). 'libEscansión: A Recursive Precedence Approach to Metrical Scansion'. Digital Humanities Quarterly 18(3)."
+[2]: https://digitalhumanities.org/dhq/vol/18/3/000739/000739.html "Sanz-Lázaro, Fernando (2024). 'libEscansión: A Recursive Precedence Approach to Metrical Scansion'. Digital Humanities Quarterly 18(3)."
 
 
 <!-- Markdown link & img dfn's -->
